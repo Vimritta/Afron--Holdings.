@@ -110,11 +110,16 @@ input {
 
 <script>
 
-// Unique greetings
+// Updated greetings WITH USERNAME
 const greetingText = {
-    Administrator: name => `🌟 Welcome back, ${name} — our respected Administrator!`,
-    Recruiter: name => `🤝 Greetings ${name}! Ready to discover great talent today.`,
-    Candidate: name => `🎯 Hello ${name}! Your journey to success starts here.`
+    Administrator: name => 
+        `Welcome, mighty Administrator ${name}! 🌟 You have full control over the system. Manage your team wisely.`,
+    
+    Recruiter: name => 
+        `Hello Recruiter ${name}! 🤝 Ready to find the perfect candidates? Let’s make great hires today!`,
+    
+    Candidate: name => 
+        `Hi Candidate ${name}! 🎯 Your dream job awaits. Explore opportunities and shine!`
 };
 
 let selectedRole = "";
