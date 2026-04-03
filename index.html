@@ -26,10 +26,14 @@ body {
     box-shadow: 0 4px 15px rgba(0,0,0,0.25);
     width: 300px;
     margin: auto;
-    position: absolute;
+}
+
+/* Fix for login page so password field works */
+#loginPage.centerBox {
+    position: relative; /* fixed from absolute */
     top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translateY(-50%);
+    z-index: 10; /* ensure clickable */
 }
 
 /* Role buttons */
@@ -140,9 +144,10 @@ document.querySelectorAll(".roleBtn").forEach(btn => {
 // STEP 2: After login → show greeting
 document.getElementById("nextBtn").addEventListener("click", () => {
     const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value.trim();
 
-    if (username === "") {
-        alert("Please enter username.");
+    if (username === "" || password === "") {
+        alert("Please enter both username and password.");
         return;
     }
 
