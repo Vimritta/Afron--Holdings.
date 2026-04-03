@@ -3,115 +3,131 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login Portal with Voice Greetings</title>
+<title>User Role Selection</title>
 
 <style>
-body {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f2fff2;
-    font-family: Arial, sans-serif;
-}
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
 
-/* Login area */
-#loginPortal {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 25px;
-    padding: 40px;
-    background-color: #d4edda;   /* pastel green */
-    border-radius: 18px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.25);
-}
+    h1 {
+        margin-top: 40px;
+    }
 
-/* Buttons */
-.loginBtn {
-    width: 260px;
-    padding: 18px;
-    text-align: center;
-    font-size: 22px;
-    font-weight: bold;
-    color: #155724;          /* dark green */
-    background-color: #c3e6cb;
-    border: 2px solid #155724;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-.loginBtn:hover {
-    transform: scale(1.07);
-    background-color: #b2dfbb;
-}
+    .container {
+        margin-top: 30px;
+    }
 
-/* Greeting box */
-#greeting {
-    font-size: 22px;
-    font-weight: bold;
-    color: #155724;
-    margin-top: 10px;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: 0.7s;
-    min-height: 60px;
-    text-align: center;
-}
-#greeting.show {
-    opacity: 1;
-    transform: translateY(0);
-}
+    button {
+        padding: 15px 30px;
+        font-size: 18px;
+        margin: 10px;
+        cursor: pointer;
+        border-radius: 8px;
+        border: none;
+        background-color: #007bff;
+        color: white;
+        transition: 0.3s;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    /* Login box */
+    #loginBox {
+        display: none;
+        margin-top: 40px;
+    }
+
+    input {
+        width: 250px;
+        padding: 12px;
+        margin: 10px;
+        border: 1px solid #aaa;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    #nextBtn {
+        background-color: #28a745;
+    }
+
+    /* greeting box (top-right) */
+    #greetingBox {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: #ffffff;
+        padding: 15px 25px;
+        border-radius: 8px;
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+        display: none;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
 </style>
-</head>
 
+</head>
 <body>
 
-<!-- LOGIN PORTAL -->
-<div id="loginPortal">
-    <div class="loginBtn" data-role="Administrator">Administrators</div>
-    <div class="loginBtn" data-role="Recruiter">Recruiters</div>
-    <div class="loginBtn" data-role="Candidate">Candidates</div>
-    <div id="greeting"></div>
+<h1>Select Your Role</h1>
+
+<div class="container" id="roleSelection">
+    <button onclick="selectRole('Administrator')">Administrators</button>
+    <button onclick="selectRole('Recruiter')">Recruiters</button>
+    <button onclick="selectRole('Candidate')">Candidates</button>
 </div>
 
+<!-- LOGIN PAGE -->
+<div id="loginBox">
+    <h2 id="loginTitle"></h2>
+
+    <input type="text" id="username" placeholder="Enter Username"><br>
+    <input type="password" id="password" placeholder="Enter Password"><br>
+
+    <button id="nextBtn" onclick="login()">Next →</button>
+</div>
+
+<!-- GREETING BOX -->
+<div id="greetingBox"></div>
+
 <script>
-// Greeting messages
-const greetings = {
-    Administrator: "Welcome, mighty Administrator! 🌟 Full system access granted.",
-    Recruiter: "Hello Recruiter! 🤝 Let's find great talent today.",
-    Candidate: "Hi Candidate! 🎯 Your future begins here — good luck!"
-};
+    let selectedRole = "";
 
-const buttons = document.querySelectorAll('.loginBtn');
-const greetingBox = document.getElementById('greeting');
+    function selectRole(role) {
+        selectedRole = role;
 
-// Add click events
-buttons.forEach(btn => {
-    btn.addEventListener('click', () => {
-        const role = btn.dataset.role;
-        const message = greetings[role];
+        // Hide selection & show login
+        document.getElementById("roleSelection").style.display = "none";
+        document.getElementById("loginBox").style.display = "block";
 
-        // Show greeting text
-        greetingBox.classList.remove("show");
-        setTimeout(() => {
-            greetingBox.textContent = message;
-            greetingBox.classList.add("show");
-        }, 50);
+        document.getElementById("loginTitle").innerText = role + " Login Portal";
+    }
+
+    function login() {
+        const user = document.getElementById("username").value.trim();
+
+        const greeting = user
+            ? `Welcome back, ${user}! You are logged in as ${selectedRole}.`
+            : `Welcome back, ${selectedRole}!`;
+
+        // Display greeting
+        const box = document.getElementById("greetingBox");
+        box.innerText = greeting;
+        box.style.display = "block";
 
         // Speak aloud
-        if ('speechSynthesis' in window) {
-            window.speechSynthesis.cancel();
-            const speak = new SpeechSynthesisUtterance(message);
-            speak.lang = "en-US";
-            speak.pitch = 1;
-            speak.rate = 1;
-            window.speechSynthesis.speak(speak);
-        }
-    });
-});
+        const msg = new SpeechSynthesisUtterance(greeting);
+        msg.rate = 1;
+        msg.pitch = 1;
+        speechSynthesis.speak(msg);
+    }
 </script>
 
 </body>
