@@ -3,132 +3,159 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>User Role Selection</title>
+<title>Role Login System</title>
 
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        text-align: center;
-        background: #f4f4f4;
-        margin: 0;
-        padding: 0;
-    }
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f2fff2;
+    overflow: hidden;
+}
 
-    h1 {
-        margin-top: 40px;
-    }
+/* Center containers */
+.centerBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    background-color: #d4edda;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+    width: 300px;
+    margin: 120px auto;
+}
 
-    .container {
-        margin-top: 30px;
-    }
+/* Role buttons */
+.roleBtn {
+    width: 260px;
+    padding: 18px;
+    font-size: 22px;
+    font-weight: bold;
+    color: #155724;
+    background-color: #c3e6cb;
+    border: 2px solid #155724;
+    border-radius: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.roleBtn:hover {
+    transform: scale(1.07);
+    background-color: #b2dfbb;
+}
 
-    button {
-        padding: 15px 30px;
-        font-size: 18px;
-        margin: 10px;
-        cursor: pointer;
-        border-radius: 8px;
-        border: none;
-        background-color: #007bff;
-        color: white;
-        transition: 0.3s;
-    }
+/* Login input fields */
+input {
+    width: 240px;
+    padding: 14px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 2px solid #155724;
+}
 
-    button:hover {
-        background-color: #0056b3;
-    }
+/* Next button */
+#nextBtn {
+    width: 120px;
+    padding: 14px;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 18px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+#nextBtn:hover {
+    background-color: #449d48;
+}
 
-    /* Login box */
-    #loginBox {
-        display: none;
-        margin-top: 40px;
-    }
-
-    input {
-        width: 250px;
-        padding: 12px;
-        margin: 10px;
-        border: 1px solid #aaa;
-        border-radius: 5px;
-        font-size: 16px;
-    }
-
-    #nextBtn {
-        background-color: #28a745;
-    }
-
-    /* greeting box (top-right) */
-    #greetingBox {
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        background: #ffffff;
-        padding: 15px 25px;
-        border-radius: 8px;
-        font-size: 18px;
-        font-weight: bold;
-        color: #333;
-        display: none;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    }
+/* Greeting top-right corner */
+#greetingMessage {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 22px;
+    font-weight: bold;
+    color: #155724;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: 1s ease;
+}
+#greetingMessage.show {
+    opacity: 1;
+    transform: translateY(0);
+}
 </style>
-
 </head>
+
 <body>
 
-<h1>Select Your Role</h1>
-
-<div class="container" id="roleSelection">
-    <button onclick="selectRole('Administrator')">Administrators</button>
-    <button onclick="selectRole('Recruiter')">Recruiters</button>
-    <button onclick="selectRole('Candidate')">Candidates</button>
+<!-- ROLE SELECTION -->
+<div id="roleSelection" class="centerBox">
+    <div class="roleBtn" data-role="Administrator">Administrators</div>
+    <div class="roleBtn" data-role="Recruiter">Recruiters</div>
+    <div class="roleBtn" data-role="Candidate">Candidates</div>
 </div>
 
 <!-- LOGIN PAGE -->
-<div id="loginBox">
-    <h2 id="loginTitle"></h2>
-
-    <input type="text" id="username" placeholder="Enter Username"><br>
-    <input type="password" id="password" placeholder="Enter Password"><br>
-
-    <button id="nextBtn" onclick="login()">Next →</button>
+<div id="loginPage" class="centerBox" style="display:none;">
+    <input type="text" id="username" placeholder="Enter Username">
+    <input type="password" id="password" placeholder="Enter Password">
+    <button id="nextBtn">Next →</button>
 </div>
 
-<!-- GREETING BOX -->
-<div id="greetingBox"></div>
+<!-- GREETING -->
+<div id="greetingMessage"></div>
 
 <script>
-    let selectedRole = "";
 
-    function selectRole(role) {
-        selectedRole = role;
+// Unique greetings
+const greetingText = {
+    Administrator: name => `🌟 Welcome back, ${name} — our respected Administrator!`,
+    Recruiter: name => `🤝 Greetings ${name}! Ready to discover great talent today.`,
+    Candidate: name => `🎯 Hello ${name}! Your journey to success starts here.`
+};
 
-        // Hide selection & show login
+let selectedRole = "";
+
+// Role click → show login page
+document.querySelectorAll(".roleBtn").forEach(btn => {
+    btn.addEventListener("click", () => {
+        selectedRole = btn.dataset.role;
+
         document.getElementById("roleSelection").style.display = "none";
-        document.getElementById("loginBox").style.display = "block";
+        document.getElementById("loginPage").style.display = "flex";
+    });
+});
 
-        document.getElementById("loginTitle").innerText = role + " Login Portal";
+// Next → Show greeting page
+document.getElementById("nextBtn").addEventListener("click", () => {
+    const username = document.getElementById("username").value.trim();
+
+    if (username === "") {
+        alert("Please enter username.");
+        return;
     }
 
-    function login() {
-        const user = document.getElementById("username").value.trim();
+    // Hide login page → Blank screen
+    document.getElementById("loginPage").style.display = "none";
+    document.body.style.backgroundColor = "white";
 
-        const greeting = user
-            ? `Welcome back, ${user}! You are logged in as ${selectedRole}.`
-            : `Welcome back, ${selectedRole}!`;
+    // Greeting message
+    const greetMsg = greetingText[selectedRole](username);
+    const greetingBox = document.getElementById("greetingMessage");
 
-        // Display greeting
-        const box = document.getElementById("greetingBox");
-        box.innerText = greeting;
-        box.style.display = "block";
+    greetingBox.textContent = greetMsg;
+    greetingBox.classList.add("show");
 
-        // Speak aloud
-        const msg = new SpeechSynthesisUtterance(greeting);
-        msg.rate = 1;
-        msg.pitch = 1;
-        speechSynthesis.speak(msg);
-    }
+    // Speak greeting
+    const speak = new SpeechSynthesisUtterance(greetMsg);
+    speak.rate = 1;
+    speak.pitch = 1;
+    speak.lang = "en-US";
+    window.speechSynthesis.speak(speak);
+});
 </script>
-
 </body>
 </html>
