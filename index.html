@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login Portal with Greetings</title>
+<title>Login Portal with Greetings and Sound</title>
 <style>
     body {
         margin: 0;
@@ -118,13 +118,12 @@
     buttons.forEach(btn => {
         btn.addEventListener('click', () => {
             const role = btn.getAttribute('data-role');
+            const message = greetings[role];
 
-            // Remove show class to reset animation
+            // Show the greeting visually
             greetingEl.classList.remove('show');
-
-            // Short delay to retrigger animation
             setTimeout(() => {
-                greetingEl.textContent = greetings[role];
+                greetingEl.textContent = message;
                 greetingEl.classList.add('show');
 
                 // Automatically hide greeting after 3 seconds
@@ -132,6 +131,16 @@
                     greetingEl.classList.remove('show');
                 }, 3000);
             }, 50);
+
+            // Speak the greeting aloud
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(message);
+                utterance.lang = 'en-US';
+                utterance.pitch = 1.0;
+                utterance.rate = 1.0;
+                window.speechSynthesis.cancel(); // stop any ongoing speech
+                window.speechSynthesis.speak(utterance);
+            }
         });
     });
 </script>
