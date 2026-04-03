@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login Portal with Voice Greetings</title>
+
 <style>
 body {
     margin: 0;
@@ -12,33 +13,20 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    background-color: #f2fff2;
     font-family: Arial, sans-serif;
-    background-color: #f0f4f0;
-    flex-direction: column;
 }
 
-/* Logo */
-#logo {
-    max-width: 80%;
-    max-height: 80%;
-    transition: opacity 1s ease, transform 1s ease;
-}
-.fadeOut {
-    opacity: 0;
-    transform: scale(0.7);
-}
-
-/* Login portal */
+/* Login area */
 #loginPortal {
-    display: none;
+    display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    gap: 20px;
+    gap: 25px;
     padding: 40px;
-    background-color: #d4edda; /* pastel green */
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    background-color: #d4edda;   /* pastel green */
+    border-radius: 18px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.25);
 }
 
 /* Buttons */
@@ -48,29 +36,29 @@ body {
     text-align: center;
     font-size: 22px;
     font-weight: bold;
-    color: #155724; /* dark green */
-    background-color: #c3e6cb; /* lighter pastel green */
+    color: #155724;          /* dark green */
+    background-color: #c3e6cb;
     border: 2px solid #155724;
-    border-radius: 10px;
+    border-radius: 12px;
     cursor: pointer;
-    transition: transform 0.3s, background-color 0.3s;
+    transition: 0.3s;
 }
 .loginBtn:hover {
-    transform: scale(1.05);
+    transform: scale(1.07);
     background-color: #b2dfbb;
 }
 
-/* Greeting */
+/* Greeting box */
 #greeting {
-    margin-top: 20px;
     font-size: 22px;
     font-weight: bold;
     color: #155724;
+    margin-top: 10px;
     opacity: 0;
     transform: translateY(20px);
-    transition: opacity 0.8s ease, transform 0.8s ease;
+    transition: 0.7s;
+    min-height: 60px;
     text-align: center;
-    min-height: 50px; /* reserve space */
 }
 #greeting.show {
     opacity: 1;
@@ -78,12 +66,10 @@ body {
 }
 </style>
 </head>
+
 <body>
 
-<!-- Logo -->
-<img id="logo" src="https://drive.google.com/uc?export=view&id=1dtAyqqnJeIrXvuA0-ONuHJ_U3D0a0QAW" alt="Logo">
-
-<!-- Login Portal -->
+<!-- LOGIN PORTAL -->
 <div id="loginPortal">
     <div class="loginBtn" data-role="Administrator">Administrators</div>
     <div class="loginBtn" data-role="Recruiter">Recruiters</div>
@@ -92,50 +78,37 @@ body {
 </div>
 
 <script>
-const logo = document.getElementById('logo');
-const portal = document.getElementById('loginPortal');
-const greetingEl = document.getElementById('greeting');
-
+// Greeting messages
 const greetings = {
-    Administrator: "Welcome, mighty Administrator! 🌟 You have full control over the system. Manage your team wisely.",
-    Recruiter: "Hello Recruiter! 🤝 Ready to find the perfect candidates? Let’s make great hires today!",
-    Candidate: "Hi Candidate! 🎯 Your dream job awaits. Explore opportunities and shine!"
+    Administrator: "Welcome, mighty Administrator! 🌟 Full system access granted.",
+    Recruiter: "Hello Recruiter! 🤝 Let's find great talent today.",
+    Candidate: "Hi Candidate! 🎯 Your future begins here — good luck!"
 };
 
-// Logo fade out and show portal
-setTimeout(() => {
-    logo.classList.add('fadeOut');
-    logo.addEventListener('transitionend', () => {
-        logo.style.display = 'none';
-        portal.style.display = 'flex';
-    }, { once: true });
-}, 2000);
-
-// Buttons click event
 const buttons = document.querySelectorAll('.loginBtn');
+const greetingBox = document.getElementById('greeting');
+
+// Add click events
 buttons.forEach(btn => {
     btn.addEventListener('click', () => {
-        const role = btn.getAttribute('data-role');
+        const role = btn.dataset.role;
         const message = greetings[role];
 
-        // Show greeting visually
-        greetingEl.classList.remove('show');
+        // Show greeting text
+        greetingBox.classList.remove("show");
         setTimeout(() => {
-            greetingEl.textContent = message;
-            greetingEl.classList.add('show');
-            setTimeout(() => greetingEl.classList.remove('show'), 3000);
+            greetingBox.textContent = message;
+            greetingBox.classList.add("show");
         }, 50);
 
-        // Speak the greeting aloud
+        // Speak aloud
         if ('speechSynthesis' in window) {
-            setTimeout(() => {
-                window.speechSynthesis.cancel(); // stop any previous speech
-                const utterance = new SpeechSynthesisUtterance(message);
-                utterance.lang = 'en-US';
-                utterance.pitch = 1;
-                utterance.rate = 1;
-                window.speechSynthesis.speak(utterance);
-            }, 100); // slight delay ensures speech triggers
+            window.speechSynthesis.cancel();
+            const speak = new SpeechSynthesisUtterance(message);
+            speak.lang = "en-US";
+            speak.pitch = 1;
+            speak.rate = 1;
+            window.speechSynthesis.speak(speak);
         }
     });
 });
