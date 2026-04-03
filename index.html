@@ -6,15 +6,11 @@
 <title>Role Login System</title>
 
 <style>
-/* BODY: Flexbox centering everything */
 body {
     margin: 0;
     font-family: Arial, sans-serif;
     background-color: #f2fff2;
     height: 100vh;
-    display: flex;             /* Flex container */
-    justify-content: center;   /* Horizontal center */
-    align-items: center;       /* Vertical center */
     overflow: hidden;
 }
 
@@ -29,6 +25,15 @@ body {
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.25);
     width: 300px;
+    margin: auto;
+}
+
+/* Fix for login page so password field works */
+#loginPage.centerBox {
+    position: relative; /* fixed from absolute */
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10; /* ensure clickable */
 }
 
 /* Role buttons */
@@ -76,7 +81,7 @@ input {
 
 /* Greeting center screen */
 #greetingMessage {
-    position: fixed;
+    position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) scale(0.9);
@@ -90,7 +95,6 @@ input {
     width: 80%;
     opacity: 0;
     transition: 0.8s ease;
-    z-index: 100; /* above everything */
 }
 #greetingMessage.show {
     opacity: 1;
