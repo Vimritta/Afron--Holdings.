@@ -1,1 +1,5 @@
-
+function handleClick(role) {
+    alert(`You clicked on ${role}`);
+    // You can later redirect to other pages:
+    // if (role === 'Administrator') window.location.href = 'admin.html';
+}
