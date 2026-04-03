@@ -4,12 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Role Login System</title>
+
 <style>
 body {
     margin: 0;
     font-family: Arial, sans-serif;
     background-color: #f2fff2;
     height: 100vh;
+    overflow: hidden;
 }
 
 /* Center containers */
@@ -22,17 +24,17 @@ body {
     padding: 40px;
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.25);
-    width: 320px;
+    width: 300px;
     margin: auto;
-    position: relative;
+    position: absolute;
     top: 50%;
-    transform: translateY(-50%);
-    z-index: 10; /* ensure clickable */
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 /* Role buttons */
 .roleBtn {
-    width: 280px;
+    width: 260px;
     padding: 18px;
     font-size: 22px;
     font-weight: bold;
@@ -51,7 +53,7 @@ body {
 
 /* Login input fields */
 input {
-    width: 260px;
+    width: 240px;
     padding: 14px;
     font-size: 16px;
     border-radius: 8px;
@@ -60,7 +62,7 @@ input {
 
 /* Next button */
 #nextBtn {
-    width: 140px;
+    width: 120px;
     padding: 14px;
     background-color: #4CAF50;
     color: white;
@@ -75,7 +77,7 @@ input {
 
 /* Greeting center screen */
 #greetingMessage {
-    position: fixed;
+    position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) scale(0.9);
@@ -89,7 +91,6 @@ input {
     width: 80%;
     opacity: 0;
     transition: 0.8s ease;
-    z-index: 100; /* above everything */
 }
 #greetingMessage.show {
     opacity: 1;
@@ -101,9 +102,9 @@ input {
 
 <!-- ROLE SELECTION -->
 <div id="roleSelection" class="centerBox">
-    <div class="roleBtn" data-role="Administrators">Administrators</div>
-    <div class="roleBtn" data-role="Recruiters">Recruiters</div>
-    <div class="roleBtn" data-role="Candidates">Candidates</div>
+    <div class="roleBtn" data-role="Administrator">Administrators</div>
+    <div class="roleBtn" data-role="Recruiter">Recruiters</div>
+    <div class="roleBtn" data-role="Candidate">Candidates</div>
 </div>
 
 <!-- LOGIN PAGE -->
@@ -117,16 +118,16 @@ input {
 <div id="greetingMessage"></div>
 
 <script>
-// EXACT GREETINGS (emoji at end)
+// EXACT GREETINGS with emoji at END
 const greetingText = {
-    Administrators: "Welcome, mighty Administrator! You have full control over the system. Manage your team wisely. 🌟",
-    Recruiters: "Hello Recruiter! Ready to find the perfect candidates? Let’s make great hires today! 🤝",
-    Candidates: "Hi Candidate! Your dream job awaits. Explore opportunities and shine! 🎯"
+    Administrator: "Welcome, mighty Administrator! You have full control over the system. Manage your team wisely. 🌟",
+    Recruiter: "Hello Recruiter! Ready to find the perfect candidates? Let’s make great hires today! 🤝",
+    Candidate: "Hi Candidate! Your dream job awaits. Explore opportunities and shine! 🎯"
 };
 
 let selectedRole = "";
 
-// STEP 1: User selects role → show login page
+// STEP 1: User selects role → show login
 document.querySelectorAll(".roleBtn").forEach(btn => {
     btn.addEventListener("click", () => {
         selectedRole = btn.dataset.role;
@@ -139,14 +140,13 @@ document.querySelectorAll(".roleBtn").forEach(btn => {
 // STEP 2: After login → show greeting
 document.getElementById("nextBtn").addEventListener("click", () => {
     const username = document.getElementById("username").value.trim();
-    const password = document.getElementById("password").value.trim();
 
-    if (username === "" || password === "") {
-        alert("Please enter both username and password.");
+    if (username === "") {
+        alert("Please enter username.");
         return;
     }
 
-    // Hide login page → white background
+    // Hide login page → blank white background
     document.getElementById("loginPage").style.display = "none";
     document.body.style.backgroundColor = "white";
 
@@ -157,7 +157,7 @@ document.getElementById("nextBtn").addEventListener("click", () => {
     greetingBox.textContent = greeting;
     greetingBox.classList.add("show");
 
-    // Speak greeting aloud
+    // Read greeting aloud
     const speak = new SpeechSynthesisUtterance(greeting);
     speak.rate = 1;
     speak.pitch = 1;
