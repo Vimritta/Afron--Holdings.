@@ -72,6 +72,7 @@
             transform: translateY(20px);
             transition: opacity 0.8s ease, transform 0.8s ease;
             text-align: center;
+            min-height: 30px; /* reserve space */
         }
 
         #greeting.show {
@@ -119,10 +120,15 @@
         buttons.forEach(btn => {
             btn.addEventListener('click', () => {
                 const role = btn.getAttribute('data-role');
-                greetingEl.textContent = greetings[role];
-                greetingEl.classList.remove('show'); // reset animation
-                void greetingEl.offsetWidth; // trigger reflow
-                greetingEl.classList.add('show');
+
+                // Remove class to retrigger animation
+                greetingEl.classList.remove('show');
+
+                // Update text after a short delay to allow animation reset
+                setTimeout(() => {
+                    greetingEl.textContent = greetings[role];
+                    greetingEl.classList.add('show');
+                }, 50);
             });
         });
     </script>
