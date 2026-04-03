@@ -30,10 +30,10 @@ body {
 
 /* Fix for login page so password field works */
 #loginPage.centerBox {
-    position: relative;
+    position: relative; /* fixed from absolute */
     top: 50%;
     transform: translateY(-50%);
-    z-index: 10;
+    z-index: 10; /* ensure clickable */
 }
 
 /* Role buttons */
@@ -79,30 +79,29 @@ input {
     background-color: #449d48;
 }
 
-/* Full-screen greeting background */
+/* Greeting center screen with background image */
 #greetingMessage {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    font-size: 32px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    font-size: 26px;
     font-weight: bold;
     color: #ffffff;
-    text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
-    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.7);
+    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
                 url('https://images.pexels.com/photos/373543/pexels-photo-373543.jpeg') no-repeat center center;
     background-size: cover;
+    padding: 30px 50px;
+    border-radius: 15px;
+    text-align: center;
+    width: 80%;
     opacity: 0;
-    transition: 1s ease;
-    z-index: 100;
+    transition: 0.8s ease;
 }
 #greetingMessage.show {
     opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
 }
 </style>
 </head>
@@ -126,7 +125,7 @@ input {
 <div id="greetingMessage"></div>
 
 <script>
-// Greetings with emoji
+// EXACT GREETINGS with emoji at END
 const greetingText = {
     Administrator: "Welcome, mighty Administrator! You have full control over the system. Manage your team wisely. 🌟",
     Recruiter: "Hello Recruiter! Ready to find the perfect candidates? Let’s make great hires today! 🤝",
@@ -135,16 +134,17 @@ const greetingText = {
 
 let selectedRole = "";
 
-// STEP 1: Role selection
+// STEP 1: User selects role → show login
 document.querySelectorAll(".roleBtn").forEach(btn => {
     btn.addEventListener("click", () => {
         selectedRole = btn.dataset.role;
+
         document.getElementById("roleSelection").style.display = "none";
         document.getElementById("loginPage").style.display = "flex";
     });
 });
 
-// STEP 2: Login → show full-screen greeting
+// STEP 2: After login → show greeting
 document.getElementById("nextBtn").addEventListener("click", () => {
     const username = document.getElementById("username").value.trim();
     const password = document.getElementById("password").value.trim();
@@ -154,15 +154,19 @@ document.getElementById("nextBtn").addEventListener("click", () => {
         return;
     }
 
+    // Hide login page → blank white background
     document.getElementById("loginPage").style.display = "none";
-    document.getElementById("roleSelection").style.display = "none";
+    document.body.style.backgroundColor = "white";
 
+    // Show greeting in center
+    const greeting = greetingText[selectedRole];
     const greetingBox = document.getElementById("greetingMessage");
-    greetingBox.textContent = greetingText[selectedRole];
+
+    greetingBox.textContent = greeting;
     greetingBox.classList.add("show");
 
-    // Speech synthesis
-    const speak = new SpeechSynthesisUtterance(greetingText[selectedRole]);
+    // Read greeting aloud
+    const speak = new SpeechSynthesisUtterance(greeting);
     speak.rate = 1;
     speak.pitch = 1;
     speak.lang = "en-US";
