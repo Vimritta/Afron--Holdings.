@@ -10,10 +10,4 @@ It displays a **logo** at the top and three clickable boxes for **Administrators
 - Hover animations for the boxes
 - Simple JavaScript interaction for clicks
 
-## File Structure
-my-ui-project/
-│
-├─ index.html
-├─ style.css
-├─ script.js
-└─ README.md
+
