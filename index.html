@@ -144,63 +144,61 @@ button:hover {
     background: #218838;
 }
 
-/* Horizontal Timeline */
-.timelineHorizontal {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: 30px auto;
-    padding: 25px;
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-    flex-wrap: wrap;
+/* NEW Clean Horizontal Timeline */
+.timelineWrapper {
+    width: 100%;
+    padding: 40px 20px;
+    margin: 0 auto;
+    position: relative;
 }
 
-.step {
+.timelineLine {
+    position: absolute;
+    top: 60px;
+    left: 5%;
+    width: 90%;
+    height: 4px;
+    background: #dcdcdc;
+    z-index: 1;
+    border-radius: 2px;
+}
+
+.timelineSteps {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    z-index: 2;
+    margin-top: 20px;
+}
+
+.timelineStep {
     text-align: center;
     width: 130px;
 }
 
-.step p {
-    margin-top: 8px;
-    font-size: 14px;
-}
-
-.circle {
-    width: 22px;
-    height: 22px;
-    background: lightgray;
+.timelineCircle {
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
-    display: inline-block;
     border: 3px solid gray;
+    background: lightgray;
+    margin: 0 auto;
 }
 
-.completed .circle {
+.timelineStep.completed .timelineCircle {
     background: #28a745;
     border-color: #28a745;
 }
 
-.pending .circle {
-    background: #cccccc;
-    border-color: #888888;
+.timelineStep.pending .timelineCircle {
+    background: #bbbbbb;
+    border-color: #888;
 }
 
-.bar {
-    height: 4px;
-    width: 60px;
-    background: #cccccc;
-    border-radius: 2px;
+.timelineStep small {
+    color: #666;
+    font-size: 12px;
 }
-
-.bar.completed {
-    background: #28a745;
-}
-
-.bar.pending {
-    background: #cccccc;
-}
-
 </style>
 </head>
 
@@ -250,48 +248,45 @@ button:hover {
         <button>Edit Profile</button>
     </div>
 
+    <!-- Timeline -->
     <h2 style="margin-top:30px;">Your Application Timeline</h2>
 
-    <!-- Horizontal Timeline -->
-    <div class="timelineHorizontal">
-        <div class="step completed">
-            <span class="circle"></span>
-            <p>Registration<br><small>01 Mar 2026</small></p>
-        </div>
+    <div class="timelineWrapper">
 
-        <div class="bar completed"></div>
+        <div class="timelineLine"></div>
 
-        <div class="step completed">
-            <span class="circle"></span>
-            <p>Profile Completed<br><small>02 Mar 2026</small></p>
-        </div>
+        <div class="timelineSteps">
 
-        <div class="bar completed"></div>
+            <div class="timelineStep completed">
+                <div class="timelineCircle"></div>
+                <p>Registration<br><small>01 Mar 2026</small></p>
+            </div>
 
-        <div class="step completed">
-            <span class="circle"></span>
-            <p>Test Completed<br><small>05 Mar 2026</small></p>
-        </div>
+            <div class="timelineStep completed">
+                <div class="timelineCircle"></div>
+                <p>Profile Completed<br><small>02 Mar 2026</small></p>
+            </div>
 
-        <div class="bar completed"></div>
+            <div class="timelineStep completed">
+                <div class="timelineCircle"></div>
+                <p>Test Completed<br><small>05 Mar 2026</small></p>
+            </div>
 
-        <div class="step completed">
-            <span class="circle"></span>
-            <p>Interview Scheduled<br><small>07 Mar 2026</small></p>
-        </div>
+            <div class="timelineStep completed">
+                <div class="timelineCircle"></div>
+                <p>Interview Scheduled<br><small>07 Mar 2026</small></p>
+            </div>
 
-        <div class="bar completed"></div>
+            <div class="timelineStep completed">
+                <div class="timelineCircle"></div>
+                <p>Interview Completed<br><small>09 Mar 2026</small></p>
+            </div>
 
-        <div class="step completed">
-            <span class="circle"></span>
-            <p>Interview Completed<br><small>09 Mar 2026</small></p>
-        </div>
+            <div class="timelineStep pending">
+                <div class="timelineCircle"></div>
+                <p>Decision Pending</p>
+            </div>
 
-        <div class="bar pending"></div>
-
-        <div class="step pending">
-            <span class="circle"></span>
-            <p>Decision Pending</p>
         </div>
     </div>
 
