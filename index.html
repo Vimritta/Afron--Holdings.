@@ -3,368 +3,114 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Role Login System</title>
+<title>Horizontal Timeline</title>
 
 <style>
+/* Modern Clean Horizontal Timeline */
 body {
-    margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #f2fff2;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* Center Card */
-.centerBox {
-    background-color: #d4edda;
+    background: #f7f7f7;
     padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.25);
-    width: 320px;
-    text-align: center;
 }
 
-/* Role Buttons */
-.roleBtn {
-    margin: 12px 0;
-    padding: 15px;
-    font-size: 22px;
-    background: #c3e6cb;
-    border: 2px solid #155724;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-.roleBtn:hover {
-    background: #b2dfbb;
-    transform: scale(1.05);
-}
-
-input {
-    width: 90%;
-    padding: 12px;
-    border-radius: 8px;
-    border: 2px solid #155724;
-    margin-bottom: 15px;
-}
-
-button {
-    padding: 12px 25px;
-    background: green;
-    color: white;
-    border-radius: 10px;
-    font-size: 18px;
-    cursor: pointer;
-}
-button:hover {
-    background: #0d7a0d;
-}
-
-/* Greeting Message */
-#greetingMessage {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 80%;
-    transform: translate(-50%, -50%) scale(0.9);
-    opacity: 0;
-    background: white;
-    padding: 30px;
-    border-radius: 15px;
-    font-size: 22px;
-    text-align: center;
-    transition: 0.7s;
-}
-#greetingMessage.show {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-}
-
-/* Candidate Dashboard */
-#candidateDashboard {
-    display: none;
-    width: 90%;
-    max-width: 900px;
-    margin: 40px auto;
-    padding: 25px;
-    background: #ffffff;
-    border-radius: 15px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-}
-
-.profileCard {
-    display: flex;
-    gap: 20px;
-    align-items: center;
-    padding: 20px;
-    background: #e9f7ef;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
-
-.profileCard img {
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    border: 3px solid #28a745;
-}
-
-.progressBarOuter {
-    background: #e0e0e0;
+.timelineContainer {
     width: 100%;
-    height: 18px;
-    border-radius: 10px;
-    margin-top: 8px;
-}
-.progressBarInner {
-    background: #28a745;
-    width: 70%;
-    height: 100%;
-    border-radius: 10px;
-}
-
-/* Quick Links */
-.quickLinks {
-    margin-top: 20px;
+    padding: 30px 20px;
     display: flex;
-    gap: 15px;
-}
-.quickLinks button {
-    flex: 1;
-    background: #28a745;
-    border: none;
-    padding: 12px;
-    border-radius: 10px;
-    color: white;
-    cursor: pointer;
-}
-.quickLinks button:hover {
-    background: #218838;
-}
-
-/* Horizontal Timeline */
-.timelineHorizontal {
-    display: flex;
-    align-items: center;
     justify-content: space-between;
-    margin: 30px auto;
-    padding: 25px;
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-    flex-wrap: wrap;
+    align-items: flex-start;
+    position: relative;
+    margin-top: 30px;
 }
 
-.step {
+/* Line behind the circles */
+.timelineLine {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: #dcdcdc;
+    z-index: 1;
+}
+
+/* Each timeline step */
+.timelineStep {
     text-align: center;
     width: 130px;
+    z-index: 2;
 }
 
-.step p {
-    margin-top: 8px;
-    font-size: 14px;
-}
-
-.circle {
+/* Circle */
+.timelineCircle {
     width: 22px;
     height: 22px;
-    background: lightgray;
     border-radius: 50%;
-    display: inline-block;
+    background: lightgray;
     border: 3px solid gray;
+    margin: 0 auto;
 }
 
-.completed .circle {
+/* Completed Step */
+.timelineStep.completed .timelineCircle {
     background: #28a745;
     border-color: #28a745;
 }
 
-.pending .circle {
-    background: #cccccc;
-    border-color: #888888;
+/* Title */
+.timelineStep p {
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: bold;
 }
 
-.bar {
-    height: 4px;
-    width: 60px;
-    background: #cccccc;
-    border-radius: 2px;
+/* Date */
+.timelineStep small {
+    font-size: 12px;
+    color: #555;
 }
-
-.bar.completed {
-    background: #28a745;
-}
-
-.bar.pending {
-    background: #cccccc;
-}
-
 </style>
-</head>
 
+</head>
 <body>
 
-<!-- ROLE SELECTION -->
-<div id="roleSelection" class="centerBox">
-    <h2>Select Your Role</h2>
-    <div class="roleBtn" data-role="Administrator">Administrators</div>
-    <div class="roleBtn" data-role="Recruiter">Recruiters</div>
-    <div class="roleBtn" data-role="Candidate">Candidates</div>
-</div>
+<h2>Candidate Progress Timeline</h2>
 
-<!-- LOGIN -->
-<div id="loginPage" class="centerBox" style="display:none;">
-    <h2 id="roleTitle"></h2>
-    <input id="username" placeholder="Enter Username">
-    <input type="password" id="password" placeholder="Enter Password">
-    <button onclick="validateLogin()">Login</button>
-</div>
+<div class="timelineContainer">
 
-<!-- GREETING -->
-<div id="greetingMessage"></div>
+    <div class="timelineLine"></div>
 
-<!-- CANDIDATE DASHBOARD -->
-<div id="candidateDashboard">
-
-    <h2>Candidate Profile Dashboard</h2>
-
-    <!-- Profile Card -->
-    <div class="profileCard">
-        <img src="https://via.placeholder.com/90" alt="Profile">
-        <div>
-            <h3>John Doe</h3>
-            <p>ID: C-10293</p>
-            <p>Status: <strong style="color:green;">Active</strong></p>
-            <div class="progressBarOuter">
-                <div class="progressBarInner"></div>
-            </div>
-        </div>
+    <div class="timelineStep completed">
+        <div class="timelineCircle"></div>
+        <p>Registration<br><small>01 Mar 2026</small></p>
     </div>
 
-    <!-- Quick Links -->
-    <div class="quickLinks">
-        <button>Upload Documents</button>
-        <button>Check Results</button>
-        <button>Edit Profile</button>
+    <div class="timelineStep completed">
+        <div class="timelineCircle"></div>
+        <p>Profile Completed<br><small>02 Mar 2026</small></p>
     </div>
 
-    <h2 style="margin-top:30px;">Your Application Timeline</h2>
+    <div class="timelineStep completed">
+        <div class="timelineCircle"></div>
+        <p>Test Completed<br><small>05 Mar 2026</small></p>
+    </div>
 
-    <!-- Horizontal Timeline -->
-    <div class="timelineHorizontal">
-        <div class="step completed">
-            <span class="circle"></span>
-            <p>Registration<br><small>01 Mar 2026</small></p>
-        </div>
+    <div class="timelineStep completed">
+        <div class="timelineCircle"></div>
+        <p>Interview Scheduled<br><small>07 Mar 2026</small></p>
+    </div>
 
-        <div class="bar completed"></div>
+    <div class="timelineStep completed">
+        <div class="timelineCircle"></div>
+        <p>Interview Completed<br><small>09 Mar 2026</small></p>
+    </div>
 
-        <div class="step completed">
-            <span class="circle"></span>
-            <p>Profile Completed<br><small>02 Mar 2026</small></p>
-        </div>
-
-        <div class="bar completed"></div>
-
-        <div class="step completed">
-            <span class="circle"></span>
-            <p>Test Completed<br><small>05 Mar 2026</small></p>
-        </div>
-
-        <div class="bar completed"></div>
-
-        <div class="step completed">
-            <span class="circle"></span>
-            <p>Interview Scheduled<br><small>07 Mar 2026</small></p>
-        </div>
-
-        <div class="bar completed"></div>
-
-        <div class="step completed">
-            <span class="circle"></span>
-            <p>Interview Completed<br><small>09 Mar 2026</small></p>
-        </div>
-
-        <div class="bar pending"></div>
-
-        <div class="step pending">
-            <span class="circle"></span>
-            <p>Decision Pending</p>
-        </div>
+    <div class="timelineStep">
+        <div class="timelineCircle"></div>
+        <p>Decision Pending</p>
     </div>
 
 </div>
-
-<script>
-/* LOGIN CREDENTIALS */
-const credentials = {
-    Administrator: { user: "@admin", pass: "@admin9090" },
-    Recruiter: { user: "@Re", pass: "@Re9090" },
-    Candidate: { user: "@Ca", pass: "@Ca9090" }
-};
-
-/* GREETINGS */
-const greetings = {
-    Administrator: "Welcome mighty Administrator! 🌟",
-    Recruiter: "Hello Recruiter! Let's find great talents! 🤝",
-    Candidate: "Hi Candidate! Your dream job awaits! 🎯"
-};
-
-let selectedRole = "";
-
-/* ROLE SELECTION */
-document.querySelectorAll(".roleBtn").forEach(btn => {
-    btn.onclick = () => {
-        selectedRole = btn.dataset.role;
-        document.getElementById("roleSelection").style.display = "none";
-        document.getElementById("loginPage").style.display = "block";
-        document.getElementById("roleTitle").textContent = selectedRole + " Login";
-    };
-});
-
-/* VALIDATE LOGIN */
-function validateLogin() {
-    let u = document.getElementById("username").value.trim();
-    let p = document.getElementById("password").value.trim();
-
-    if (u === credentials[selectedRole].user && p === credentials[selectedRole].pass) {
-        showGreeting();
-    } else {
-        alert("Invalid username or password");
-    }
-}
-
-/* REMOVE EMOJIS BEFORE SPEAKING */
-function removeEmojis(text) {
-    return text.replace(/[\p{Emoji}\p{Extended_Pictographic}]/gu, "");
-}
-
-/* SHOW GREETING */
-function showGreeting() {
-    document.getElementById("loginPage").style.display = "none";
-
-    let msg = greetings[selectedRole];
-    let box = document.getElementById("greetingMessage");
-    box.textContent = msg;
-    box.classList.add("show");
-
-    let speakText = removeEmojis(msg);
-    let speak = new SpeechSynthesisUtterance(speakText);
-    window.speechSynthesis.speak(speak);
-
-    // After 2.5 sec → Candidate Dashboard
-    setTimeout(() => {
-        box.style.display = "none";
-        if (selectedRole === "Candidate") {
-            document.getElementById("candidateDashboard").style.display = "block";
-            document.body.style.display = "block";
-            document.body.style.padding = "40px";
-        }
-    }, 2500);
-}
-</script>
 
 </body>
 </html>
