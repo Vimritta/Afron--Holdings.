@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,78 +16,65 @@ body {
     align-items: center;
 }
 
-/* Page containers */
+/* Center Card */
 .centerBox {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 25px;
     background-color: #d4edda;
     padding: 40px;
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.25);
-    width: 300px;
+    width: 320px;
     text-align: center;
 }
 
-/* Role buttons */
 .roleBtn {
-    width: 260px;
-    padding: 18px;
+    margin: 12px 0;
+    padding: 15px;
     font-size: 22px;
-    font-weight: bold;
-    color: #155724;
-    background-color: #c3e6cb;
+    background: #c3e6cb;
     border: 2px solid #155724;
     border-radius: 12px;
     cursor: pointer;
     transition: 0.3s;
 }
 .roleBtn:hover {
-    transform: scale(1.07);
-    background-color: #b2dfbb;
+    background: #b2dfbb;
+    transform: scale(1.05);
 }
 
-/* Inputs */
 input {
-    width: 240px;
-    padding: 14px;
-    font-size: 16px;
+    width: 90%;
+    padding: 12px;
     border-radius: 8px;
     border: 2px solid #155724;
+    margin-bottom: 15px;
 }
 
-/* Next button */
-#nextBtn {
-    width: 120px;
-    padding: 14px;
-    background-color: #4CAF50;
+button {
+    padding: 12px 25px;
+    background: green;
     color: white;
-    font-size: 18px;
-    border: none;
     border-radius: 10px;
+    font-size: 18px;
     cursor: pointer;
 }
-#nextBtn:hover {
-    background-color: #449d48;
+button:hover {
+    background: #0d7a0d;
 }
 
-/* Greeting message */
+/* Greeting Message */
 #greetingMessage {
-    position: fixed;
+    position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(0.9);
-    font-size: 26px;
-    font-weight: bold;
-    color: #155724;
-    background: #e9ffe9;
-    padding: 30px 50px;
-    border-radius: 15px;
     width: 80%;
-    text-align: center;
+    transform: translate(-50%, -50%) scale(0.9);
     opacity: 0;
-    transition: 0.8s ease;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    font-size: 22px;
+    text-align: center;
+    transition: 0.7s;
 }
 #greetingMessage.show {
     opacity: 1;
@@ -101,79 +87,71 @@ input {
 
 <!-- ROLE SELECTION -->
 <div id="roleSelection" class="centerBox">
+    <h2>Select Your Role</h2>
     <div class="roleBtn" data-role="Administrator">Administrators</div>
     <div class="roleBtn" data-role="Recruiter">Recruiters</div>
     <div class="roleBtn" data-role="Candidate">Candidates</div>
 </div>
 
-<!-- LOGIN PAGE -->
+<!-- LOGIN -->
 <div id="loginPage" class="centerBox" style="display:none;">
-    <h3 id="loginTitle"></h3>
-    <input type="text" id="username" placeholder="Enter Username">
+    <h2 id="roleTitle"></h2>
+    <input id="username" placeholder="Enter Username">
     <input type="password" id="password" placeholder="Enter Password">
-    <button id="nextBtn">Login →</button>
+    <button onclick="validateLogin()">Login</button>
 </div>
 
 <!-- GREETING -->
 <div id="greetingMessage"></div>
 
 <script>
-
-// Greeting messages with emojis
-const greetingText = {
-    Administrator: "Welcome, mighty Administrator! You have full control over the system. 🌟",
-    Recruiter: "Hello Recruiter! Ready to find the perfect candidates today? 🤝",
-    Candidate: "Hi Candidate! Your dream job is waiting for you. 🎯"
+const credentials = {
+    Administrator: { user: "@admin", pass: "@admin9090" },
+    Recruiter: { user: "@Re", pass: "@Re9090" },
+    Candidate: { user: "@Ca", pass: "@Ca9090" }
 };
 
-// LOGIN CREDENTIALS
-const loginCredentials = {
-    Administrator: { user: "@admin", pass: "@admin9090" },
-    Recruiter: { user: "@RE", pass: "@RE9090" },
-    Candidate: { user: "@CA", pass: "@CA9090" }
+const greetings = {
+    Administrator: "Welcome mighty Administrator! 🌟",
+    Recruiter: "Hello Recruiter! Let's find great talents! 🤝",
+    Candidate: "Hi Candidate! Your dream job awaits! 🎯"
 };
 
 let selectedRole = "";
 
-// STEP 1 — Role Selection
+// Step 1 — Pick Role
 document.querySelectorAll(".roleBtn").forEach(btn => {
-    btn.addEventListener("click", () => {
+    btn.onclick = () => {
         selectedRole = btn.dataset.role;
-
         document.getElementById("roleSelection").style.display = "none";
-        document.getElementById("loginTitle").textContent = selectedRole + " Login";
-        document.getElementById("loginPage").style.display = "flex";
-    });
+        document.getElementById("loginPage").style.display = "block";
+        document.getElementById("roleTitle").textContent = selectedRole + " Login";
+    };
 });
 
-// STEP 2 — Validate Login
-document.getElementById("nextBtn").addEventListener("click", () => {
-    const enteredUser = document.getElementById("username").value.trim();
-    const enteredPass = document.getElementById("password").value.trim();
+// Step 2 — Validate Login
+function validateLogin() {
+    let u = document.getElementById("username").value.trim();
+    let p = document.getElementById("password").value.trim();
 
-    const correctUser = loginCredentials[selectedRole].user;
-    const correctPass = loginCredentials[selectedRole].pass;
-
-    // CHECK
-    if (enteredUser !== correctUser || enteredPass !== correctPass) {
-        alert("Incorrect username or password for " + selectedRole);
-        return;
+    if (u === credentials[selectedRole].user && p === credentials[selectedRole].pass) {
+        showGreeting();
+    } else {
+        alert("Invalid username or password");
     }
+}
 
-    // Hide login box
+// Step 3 — Greeting
+function showGreeting() {
     document.getElementById("loginPage").style.display = "none";
-    document.body.style.backgroundColor = "white";
 
-    // Show greeting
-    const greetingBox = document.getElementById("greetingMessage");
-    greetingBox.textContent = greetingText[selectedRole];
-    greetingBox.classList.add("show");
+    let box = document.getElementById("greetingMessage");
+    box.textContent = greetings[selectedRole];
+    box.classList.add("show");
 
-    // SPEAK the greeting
-    const speak = new SpeechSynthesisUtterance(greetingText[selectedRole]);
+    let speak = new SpeechSynthesisUtterance(box.textContent);
     window.speechSynthesis.speak(speak);
-});
-
+}
 </script>
 
 </body>
