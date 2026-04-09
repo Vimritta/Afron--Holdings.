@@ -141,15 +141,24 @@ function validateLogin() {
     }
 }
 
+// Function to remove emojis before speech
+function removeEmojis(text) {
+    return text.replace(/[\p{Emoji}\p{Extended_Pictographic}]/gu, "");
+}
+
 // Step 3 — Greeting
 function showGreeting() {
     document.getElementById("loginPage").style.display = "none";
 
     let box = document.getElementById("greetingMessage");
-    box.textContent = greetings[selectedRole];
+    let message = greetings[selectedRole];
+    box.textContent = message;
     box.classList.add("show");
 
-    let speak = new SpeechSynthesisUtterance(box.textContent);
+    // REMOVE EMOJI from speech
+    let speakText = removeEmojis(message);
+
+    let speak = new SpeechSynthesisUtterance(speakText);
     window.speechSynthesis.speak(speak);
 }
 </script>
