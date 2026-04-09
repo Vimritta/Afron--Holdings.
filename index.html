@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,10 +12,12 @@ body {
     font-family: Arial, sans-serif;
     background-color: #f2fff2;
     height: 100vh;
-    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-/* Center containers */
+/* Page containers */
 .centerBox {
     display: flex;
     flex-direction: column;
@@ -25,15 +28,7 @@ body {
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.25);
     width: 300px;
-    margin: auto;
-}
-
-/* Fix for login page so password field works */
-#loginPage.centerBox {
-    position: relative; /* fixed from absolute */
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 10; /* ensure clickable */
+    text-align: center;
 }
 
 /* Role buttons */
@@ -46,7 +41,6 @@ body {
     background-color: #c3e6cb;
     border: 2px solid #155724;
     border-radius: 12px;
-    text-align: center;
     cursor: pointer;
     transition: 0.3s;
 }
@@ -55,7 +49,7 @@ body {
     background-color: #b2dfbb;
 }
 
-/* Login input fields */
+/* Inputs */
 input {
     width: 240px;
     padding: 14px;
@@ -79,9 +73,9 @@ input {
     background-color: #449d48;
 }
 
-/* Greeting center screen */
+/* Greeting message */
 #greetingMessage {
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) scale(0.9);
@@ -91,8 +85,8 @@ input {
     background: #e9ffe9;
     padding: 30px 50px;
     border-radius: 15px;
-    text-align: center;
     width: 80%;
+    text-align: center;
     opacity: 0;
     transition: 0.8s ease;
 }
@@ -102,6 +96,7 @@ input {
 }
 </style>
 </head>
+
 <body>
 
 <!-- ROLE SELECTION -->
@@ -113,62 +108,72 @@ input {
 
 <!-- LOGIN PAGE -->
 <div id="loginPage" class="centerBox" style="display:none;">
+    <h3 id="loginTitle"></h3>
     <input type="text" id="username" placeholder="Enter Username">
     <input type="password" id="password" placeholder="Enter Password">
-    <button id="nextBtn">Next →</button>
+    <button id="nextBtn">Login →</button>
 </div>
 
 <!-- GREETING -->
 <div id="greetingMessage"></div>
 
 <script>
-// EXACT GREETINGS with emoji at END
+
+// Greeting messages with emojis
 const greetingText = {
-    Administrator: "Welcome, mighty Administrator! You have full control over the system. Manage your team wisely. 🌟",
-    Recruiter: "Hello Recruiter! Ready to find the perfect candidates? Let’s make great hires today! 🤝",
-    Candidate: "Hi Candidate! Your dream job awaits. Explore opportunities and shine! 🎯"
+    Administrator: "Welcome, mighty Administrator! You have full control over the system. 🌟",
+    Recruiter: "Hello Recruiter! Ready to find the perfect candidates today? 🤝",
+    Candidate: "Hi Candidate! Your dream job is waiting for you. 🎯"
+};
+
+// LOGIN CREDENTIALS
+const loginCredentials = {
+    Administrator: { user: "@admin", pass: "@admin9090" },
+    Recruiter: { user: "@RE", pass: "@RE9090" },
+    Candidate: { user: "@CA", pass: "@CA9090" }
 };
 
 let selectedRole = "";
 
-// STEP 1: User selects role → show login
+// STEP 1 — Role Selection
 document.querySelectorAll(".roleBtn").forEach(btn => {
     btn.addEventListener("click", () => {
         selectedRole = btn.dataset.role;
 
         document.getElementById("roleSelection").style.display = "none";
+        document.getElementById("loginTitle").textContent = selectedRole + " Login";
         document.getElementById("loginPage").style.display = "flex";
     });
 });
 
-// STEP 2: After login → show greeting
+// STEP 2 — Validate Login
 document.getElementById("nextBtn").addEventListener("click", () => {
-    const username = document.getElementById("username").value.trim();
-    const password = document.getElementById("password").value.trim();
+    const enteredUser = document.getElementById("username").value.trim();
+    const enteredPass = document.getElementById("password").value.trim();
 
-    if (username === "" || password === "") {
-        alert("Please enter both username and password.");
+    const correctUser = loginCredentials[selectedRole].user;
+    const correctPass = loginCredentials[selectedRole].pass;
+
+    // CHECK
+    if (enteredUser !== correctUser || enteredPass !== correctPass) {
+        alert("Incorrect username or password for " + selectedRole);
         return;
     }
 
-    // Hide login page → blank white background
+    // Hide login box
     document.getElementById("loginPage").style.display = "none";
     document.body.style.backgroundColor = "white";
 
-    // Show greeting in center
-    const greeting = greetingText[selectedRole];
+    // Show greeting
     const greetingBox = document.getElementById("greetingMessage");
-
-    greetingBox.textContent = greeting;
+    greetingBox.textContent = greetingText[selectedRole];
     greetingBox.classList.add("show");
 
-    // Read greeting aloud
-    const speak = new SpeechSynthesisUtterance(greeting);
-    speak.rate = 1;
-    speak.pitch = 1;
-    speak.lang = "en-US";
+    // SPEAK the greeting
+    const speak = new SpeechSynthesisUtterance(greetingText[selectedRole]);
     window.speechSynthesis.speak(speak);
 });
+
 </script>
 
 </body>
