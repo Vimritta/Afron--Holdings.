@@ -3,154 +3,142 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Role Login System</title>
+<title>Smooth Login UI</title>
 
 <style>
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f2fff2;
-    height: 100vh;
+    font-family: Arial;
+    background: #eaffea;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
+    padding-top: 40px;
 }
 
-/* Center Card */
-.centerBox {
-    background-color: #d4edda;
-    padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.25);
-    width: 320px;
-    text-align: center;
+/* Logo */
+#logo {
+    width: 200px;
+    margin-bottom: 25px;
 }
 
+/* Role Buttons */
 .roleBtn {
-    margin: 12px 0;
-    padding: 15px;
-    font-size: 22px;
-    background: #c3e6cb;
+    width: 320px;
+    padding: 18px;
+    font-size: 24px;
+    background: #d4edda;
     border: 2px solid #155724;
     border-radius: 12px;
+    margin: 10px;
     cursor: pointer;
+    text-align: center;
     transition: 0.3s;
 }
 .roleBtn:hover {
-    background: #b2dfbb;
+    background: #bfeccb;
     transform: scale(1.05);
 }
 
+/* Login Popup */
+#loginPopup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 300px;
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    transform: translate(-50%, -50%) scale(0.7);
+    opacity: 0;
+    pointer-events: none;
+    box-shadow: 0 0 20px rgba(0,0,0,0.25);
+    transition: 0.5s;
+}
+#loginPopup.show {
+    opacity: 1;
+    pointer-events: all;
+    transform: translate(-50%, -50%) scale(1);
+}
+
 input {
-    width: 90%;
+    width: 100%;
     padding: 12px;
-    border-radius: 8px;
+    margin: 10px 0;
     border: 2px solid #155724;
-    margin-bottom: 15px;
+    border-radius: 8px;
 }
 
 button {
-    padding: 12px 25px;
+    width: 100%;
+    padding: 14px;
     background: green;
     color: white;
-    border-radius: 10px;
+    border: none;
+    border-radius: 8px;
     font-size: 18px;
     cursor: pointer;
 }
 button:hover {
-    background: #0d7a0d;
+    background: #0a7a0a;
 }
 
-/* Greeting Message */
-#greetingMessage {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 80%;
-    transform: translate(-50%, -50%) scale(0.9);
-    opacity: 0;
-    background: white;
-    padding: 30px;
-    border-radius: 15px;
-    font-size: 22px;
+#alertBox {
+    color: red;
+    font-weight: bold;
     text-align: center;
-    transition: 0.7s;
-}
-#greetingMessage.show {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
+    margin-top: 10px;
 }
 </style>
 </head>
 
 <body>
 
-<!-- ROLE SELECTION -->
-<div id="roleSelection" class="centerBox">
-    <h2>Select Your Role</h2>
-    <div class="roleBtn" data-role="Administrator">Administrators</div>
-    <div class="roleBtn" data-role="Recruiter">Recruiters</div>
-    <div class="roleBtn" data-role="Candidate">Candidates</div>
-</div>
+<img id="logo" src="https://upload.wikimedia.org/wikipedia/commons/0/08/Teamwork_icon.svg">
 
-<!-- LOGIN -->
-<div id="loginPage" class="centerBox" style="display:none;">
-    <h2 id="roleTitle"></h2>
+<div class="roleBtn" data-role="Administrator">Administrators</div>
+<div class="roleBtn" data-role="Recruiter">Recruiters</div>
+<div class="roleBtn" data-role="Candidate">Candidates</div>
+
+<!-- Login Popup -->
+<div id="loginPopup">
+    <h3 id="popupTitle"></h3>
     <input id="username" placeholder="Enter Username">
-    <input type="password" id="password" placeholder="Enter Password">
-    <button onclick="validateLogin()">Login</button>
+    <input id="password" type="password" placeholder="Enter Password">
+    <button onclick="checkLogin()">Login</button>
+    <div id="alertBox"></div>
 </div>
-
-<!-- GREETING -->
-<div id="greetingMessage"></div>
 
 <script>
-const credentials = {
-    Administrator: { user: "@admin", pass: "@admin9090" },
-    Recruiter: { user: "@Re", pass: "@Re9090" },
-    Candidate: { user: "@Ca", pass: "@Ca9090" }
+const users = {
+    Administrator: { u:"@admin", p:"@admin9090" },
+    Recruiter: { u:"@Re", p:"@Re9090" },
+    Candidate: { u:"@Ca", p:"@Ca9090" }
 };
 
-const greetings = {
-    Administrator: "Welcome mighty Administrator! 🌟",
-    Recruiter: "Hello Recruiter! Let's find great talents! 🤝",
-    Candidate: "Hi Candidate! Your dream job awaits! 🎯"
-};
+let selected = "";
 
-let selectedRole = "";
-
-// Step 1 — Pick Role
+// Show popup
 document.querySelectorAll(".roleBtn").forEach(btn => {
     btn.onclick = () => {
-        selectedRole = btn.dataset.role;
-        document.getElementById("roleSelection").style.display = "none";
-        document.getElementById("loginPage").style.display = "block";
-        document.getElementById("roleTitle").textContent = selectedRole + " Login";
+        selected = btn.dataset.role;
+        document.getElementById("popupTitle").textContent = selected + " Login";
+        document.getElementById("loginPopup").classList.add("show");
     };
 });
 
-// Step 2 — Validate Login
-function validateLogin() {
-    let u = document.getElementById("username").value.trim();
-    let p = document.getElementById("password").value.trim();
+// Validate
+function checkLogin() {
+    let u = username.value.trim();
+    let p = password.value.trim();
 
-    if (u === credentials[selectedRole].user && p === credentials[selectedRole].pass) {
-        showGreeting();
-    } else {
-        alert("Invalid username or password");
+    if (u === users[selected].u && p === users[selected].p) {
+        alert("Login Successful: " + selected);
+        document.getElementById("loginPopup").classList.remove("show");
+    } 
+    else {
+        alertBox.textContent = "Invalid username or password!";
     }
-}
-
-// Step 3 — Greeting
-function showGreeting() {
-    document.getElementById("loginPage").style.display = "none";
-
-    let box = document.getElementById("greetingMessage");
-    box.textContent = greetings[selectedRole];
-    box.classList.add("show");
-
-    let speak = new SpeechSynthesisUtterance(box.textContent);
-    window.speechSynthesis.speak(speak);
 }
 </script>
 
