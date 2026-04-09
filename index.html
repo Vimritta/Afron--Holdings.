@@ -26,6 +26,7 @@ body {
     text-align: center;
 }
 
+/* Role Buttons */
 .roleBtn {
     margin: 12px 0;
     padding: 15px;
@@ -61,7 +62,7 @@ button:hover {
     background: #0d7a0d;
 }
 
-/* Greeting */
+/* Greeting Message */
 #greetingMessage {
     position: absolute;
     top: 50%;
@@ -81,87 +82,125 @@ button:hover {
     transform: translate(-50%, -50%) scale(1);
 }
 
-/* ---------------------------- */
-/*      CANDIDATE DASHBOARD     */
-/* ---------------------------- */
+/* Candidate Dashboard */
 #candidateDashboard {
-    display:none;
+    display: none;
     width: 90%;
     max-width: 900px;
-    margin: auto;
-    padding: 20px;
+    margin: 40px auto;
+    padding: 25px;
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
 }
 
-/* Profile Card */
 .profileCard {
-    background: white;
+    display: flex;
+    gap: 20px;
+    align-items: center;
     padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-    margin-bottom: 25px;
-    text-align: center;
+    background: #e9f7ef;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
 .profileCard img {
-    width: 120px;
-    height: 120px;
+    width: 90px;
+    height: 90px;
     border-radius: 50%;
-    border: 4px solid #28a745;
+    border: 3px solid #28a745;
 }
 
-.progressBar {
-    width: 80%;
-    height: 15px;
-    background: #d4edda;
+.progressBarOuter {
+    background: #e0e0e0;
+    width: 100%;
+    height: 18px;
     border-radius: 10px;
-    margin: 10px auto;
+    margin-top: 8px;
 }
-.progressFill {
-    width: 60%;
+.progressBarInner {
+    background: #28a745;
+    width: 70%;
     height: 100%;
-    background: #28a745;
     border-radius: 10px;
 }
 
-/* Quick links */
+/* Quick Links */
+.quickLinks {
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+}
 .quickLinks button {
-    padding: 10px 15px;
-    margin: 8px;
+    flex: 1;
     background: #28a745;
-    color: white;
-    border-radius: 8px;
     border: none;
+    padding: 12px;
+    border-radius: 10px;
+    color: white;
     cursor: pointer;
 }
 .quickLinks button:hover {
-    background: #1f7a34;
+    background: #218838;
 }
 
-/* Timeline */
-.timelineBox {
+/* Horizontal Timeline */
+.timelineHorizontal {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 30px auto;
+    padding: 25px;
     background: white;
-    padding: 20px;
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    flex-wrap: wrap;
 }
 
-.timelineItem {
-    position: relative;
-    padding-left: 40px;
-    margin-bottom: 20px;
+.step {
+    text-align: center;
+    width: 130px;
 }
-.timelineItem::before {
-    content: "●";
-    color: green;
-    position: absolute;
-    left: 0;
-    top: 0;
-    font-size: 22px;
+
+.step p {
+    margin-top: 8px;
+    font-size: 14px;
 }
-.timelineDate {
-    font-size: 13px;
-    color: gray;
+
+.circle {
+    width: 22px;
+    height: 22px;
+    background: lightgray;
+    border-radius: 50%;
+    display: inline-block;
+    border: 3px solid gray;
 }
+
+.completed .circle {
+    background: #28a745;
+    border-color: #28a745;
+}
+
+.pending .circle {
+    background: #cccccc;
+    border-color: #888888;
+}
+
+.bar {
+    height: 4px;
+    width: 60px;
+    background: #cccccc;
+    border-radius: 2px;
+}
+
+.bar.completed {
+    background: #28a745;
+}
+
+.bar.pending {
+    background: #cccccc;
+}
+
 </style>
 </head>
 
@@ -189,67 +228,84 @@ button:hover {
 <!-- CANDIDATE DASHBOARD -->
 <div id="candidateDashboard">
 
-    <!-- Profile Overview -->
+    <h2>Candidate Profile Dashboard</h2>
+
+    <!-- Profile Card -->
     <div class="profileCard">
-        <img src="https://via.placeholder.com/120" alt="Profile">
-        <h2>John Doe</h2>
-        <h3>Candidate ID: C-10293</h3>
-        <p>Status: <b style="color:green;">Active</b></p>
-
-        <h4>Application Progress</h4>
-        <div class="progressBar">
-            <div class="progressFill"></div>
-        </div>
-
-        <div class="quickLinks">
-            <button>Upload Documents</button>
-            <button>Check Results</button>
-            <button>Edit Profile</button>
+        <img src="https://via.placeholder.com/90" alt="Profile">
+        <div>
+            <h3>John Doe</h3>
+            <p>ID: C-10293</p>
+            <p>Status: <strong style="color:green;">Active</strong></p>
+            <div class="progressBarOuter">
+                <div class="progressBarInner"></div>
+            </div>
         </div>
     </div>
 
-    <!-- Candidate Timeline -->
-    <div class="timelineBox">
-        <h3>Candidate Timeline</h3>
+    <!-- Quick Links -->
+    <div class="quickLinks">
+        <button>Upload Documents</button>
+        <button>Check Results</button>
+        <button>Edit Profile</button>
+    </div>
 
-        <div class="timelineItem">
-            <b>Registration Completed</b>
-            <div class="timelineDate">01 March 2026</div>
+    <h2 style="margin-top:30px;">Your Application Timeline</h2>
+
+    <!-- Horizontal Timeline -->
+    <div class="timelineHorizontal">
+        <div class="step completed">
+            <span class="circle"></span>
+            <p>Registration<br><small>01 Mar 2026</small></p>
         </div>
 
-        <div class="timelineItem">
-            <b>Profile Completed</b>
-            <div class="timelineDate">02 March 2026</div>
+        <div class="bar completed"></div>
+
+        <div class="step completed">
+            <span class="circle"></span>
+            <p>Profile Completed<br><small>02 Mar 2026</small></p>
         </div>
 
-        <div class="timelineItem">
-            <b>Test Completed</b>
-            <div class="timelineDate">05 March 2026</div>
+        <div class="bar completed"></div>
+
+        <div class="step completed">
+            <span class="circle"></span>
+            <p>Test Completed<br><small>05 Mar 2026</small></p>
         </div>
 
-        <div class="timelineItem">
-            <b>Interview Scheduled</b>
-            <div class="timelineDate">07 March 2026</div>
+        <div class="bar completed"></div>
+
+        <div class="step completed">
+            <span class="circle"></span>
+            <p>Interview Scheduled<br><small>07 Mar 2026</small></p>
         </div>
 
-        <div class="timelineItem">
-            <b>Interview Completed</b>
-            <div class="timelineDate">09 March 2026</div>
+        <div class="bar completed"></div>
+
+        <div class="step completed">
+            <span class="circle"></span>
+            <p>Interview Completed<br><small>09 Mar 2026</small></p>
         </div>
 
-        <div class="timelineItem">
-            <b>Final Decision Pending</b>
+        <div class="bar pending"></div>
+
+        <div class="step pending">
+            <span class="circle"></span>
+            <p>Decision Pending</p>
         </div>
     </div>
+
 </div>
 
 <script>
+/* LOGIN CREDENTIALS */
 const credentials = {
     Administrator: { user: "@admin", pass: "@admin9090" },
     Recruiter: { user: "@Re", pass: "@Re9090" },
     Candidate: { user: "@Ca", pass: "@Ca9090" }
 };
 
+/* GREETINGS */
 const greetings = {
     Administrator: "Welcome mighty Administrator! 🌟",
     Recruiter: "Hello Recruiter! Let's find great talents! 🤝",
@@ -258,7 +314,7 @@ const greetings = {
 
 let selectedRole = "";
 
-// ROLE PICK
+/* ROLE SELECTION */
 document.querySelectorAll(".roleBtn").forEach(btn => {
     btn.onclick = () => {
         selectedRole = btn.dataset.role;
@@ -268,7 +324,7 @@ document.querySelectorAll(".roleBtn").forEach(btn => {
     };
 });
 
-// LOGIN
+/* VALIDATE LOGIN */
 function validateLogin() {
     let u = document.getElementById("username").value.trim();
     let p = document.getElementById("password").value.trim();
@@ -280,29 +336,31 @@ function validateLogin() {
     }
 }
 
+/* REMOVE EMOJIS BEFORE SPEAKING */
 function removeEmojis(text) {
     return text.replace(/[\p{Emoji}\p{Extended_Pictographic}]/gu, "");
 }
 
-// GREETING + SHOW DASHBOARD
+/* SHOW GREETING */
 function showGreeting() {
     document.getElementById("loginPage").style.display = "none";
 
+    let msg = greetings[selectedRole];
     let box = document.getElementById("greetingMessage");
-    let message = greetings[selectedRole];
-    box.textContent = message;
+    box.textContent = msg;
     box.classList.add("show");
 
-    let speakText = removeEmojis(message);
+    let speakText = removeEmojis(msg);
     let speak = new SpeechSynthesisUtterance(speakText);
     window.speechSynthesis.speak(speak);
 
+    // After 2.5 sec → Candidate Dashboard
     setTimeout(() => {
         box.style.display = "none";
-
         if (selectedRole === "Candidate") {
             document.getElementById("candidateDashboard").style.display = "block";
             document.body.style.display = "block";
+            document.body.style.padding = "40px";
         }
     }, 2500);
 }
