@@ -16,6 +16,26 @@ body {
     align-items: center;
 }
 
+/* Back & Next Buttons */
+.dashboardNav {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+.navBtn {
+    padding: 10px 18px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    background: #218838;
+    color: white;
+    transition: 0.3s;
+}
+.navBtn:hover {
+    background: #1a6d2f;
+}
+
 /* Center Card */
 .centerBox {
     background-color: #d4edda;
@@ -226,6 +246,12 @@ button:hover {
 <!-- CANDIDATE DASHBOARD -->
 <div id="candidateDashboard">
 
+    <!-- Back & Next Buttons Added Here -->
+    <div class="dashboardNav">
+        <button class="navBtn" onclick="goBack()">⬅ Back</button>
+        <button class="navBtn" onclick="goNext()">Next ➜</button>
+    </div>
+
     <h2>Candidate Profile Dashboard</h2>
 
     <!-- Profile Card -->
@@ -358,6 +384,17 @@ function showGreeting() {
             document.body.style.padding = "40px";
         }
     }, 2500);
+}
+
+/* BACK BUTTON FUNCTION */
+function goBack() {
+    document.getElementById("candidateDashboard").style.display = "none";
+    document.getElementById("roleSelection").style.display = "block";
+}
+
+/* NEXT BUTTON FUNCTION */
+function goNext() {
+    alert("Next page feature not added yet — tell me what you want next!");
 }
 </script>
 
