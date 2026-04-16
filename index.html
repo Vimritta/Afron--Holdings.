@@ -94,7 +94,6 @@ button:hover {
     box-shadow: 0 4px 20px rgba(0,0,0,0.15);
 }
 
-/* Profile Card */
 .profileCard {
     display: flex;
     gap: 20px;
@@ -112,7 +111,6 @@ button:hover {
     border: 3px solid #28a745;
 }
 
-/* Progress bar */
 .progressBarOuter {
     background: #e0e0e0;
     width: 100%;
@@ -146,7 +144,7 @@ button:hover {
     background: #218838;
 }
 
-/* Timeline */
+/* Horizontal Timeline */
 .timelineWrapper {
     width: 100%;
     padding: 40px 20px;
@@ -202,23 +200,17 @@ button:hover {
     font-size: 12px;
 }
 
-/* Navigation Buttons */
-.navigationBtns {
-    margin-top: 30px;
+/* BACK & NEXT BUTTONS */
+.navButtons {
     display: flex;
     justify-content: space-between;
+    margin-top: 30px;
 }
 
-.navigationBtns button {
-    width: 150px;
+.navButtons button {
+    width: 45%;
     padding: 12px;
-    background: #155724;
-    color: white;
-    border-radius: 10px;
-    cursor: pointer;
-}
-.navigationBtns button:hover {
-    background: #0d421a;
+    font-size: 18px;
 }
 </style>
 </head>
@@ -233,7 +225,7 @@ button:hover {
     <div class="roleBtn" data-role="Candidate">Candidates</div>
 </div>
 
-<!-- LOGIN -->
+<!-- LOGIN PAGE -->
 <div id="loginPage" class="centerBox" style="display:none;">
     <h2 id="roleTitle"></h2>
     <input id="username" placeholder="Enter Username">
@@ -249,31 +241,34 @@ button:hover {
 
     <h2>Candidate Profile Dashboard</h2>
 
+    <!-- Profile Card -->
     <div class="profileCard">
         <img src="https://via.placeholder.com/90" alt="Profile">
         <div>
             <h3>John Doe</h3>
             <p>ID: C-10293</p>
             <p>Status: <strong style="color:green;">Active</strong></p>
+
             <div class="progressBarOuter">
                 <div class="progressBarInner"></div>
             </div>
         </div>
     </div>
 
+    <!-- Quick Links -->
     <div class="quickLinks">
         <button>Upload Documents</button>
         <button>Check Results</button>
         <button>Edit Profile</button>
     </div>
 
+    <!-- Timeline -->
     <h2 style="margin-top:30px;">Your Application Timeline</h2>
 
     <div class="timelineWrapper">
         <div class="timelineLine"></div>
 
         <div class="timelineSteps">
-
             <div class="timelineStep completed">
                 <div class="timelineCircle"></div>
                 <p>Registration<br><small>01 Mar 2026</small></p>
@@ -303,25 +298,26 @@ button:hover {
                 <div class="timelineCircle"></div>
                 <p>Decision Pending</p>
             </div>
-
         </div>
     </div>
 
-    <!-- Navigation Buttons -->
-    <div class="navigationBtns">
+    <!-- NAV BUTTONS -->
+    <div class="navButtons">
         <button onclick="goBack()">⬅ Back</button>
-        <button onclick="goNext()">Next ➡</button>
+        <button onclick="nextPage()">Next ➜</button>
     </div>
 
 </div>
 
 <script>
+/* USER CREDENTIALS */
 const credentials = {
     Administrator: { user: "@admin", pass: "@admin9090" },
     Recruiter: { user: "@Re", pass: "@Re9090" },
     Candidate: { user: "@Ca", pass: "@Ca9090" }
 };
 
+/* GREETINGS */
 const greetings = {
     Administrator: "Welcome mighty Administrator! 🌟",
     Recruiter: "Hello Recruiter! Let's find great talents! 🤝",
@@ -330,17 +326,18 @@ const greetings = {
 
 let selectedRole = "";
 
-/* ROLE SELECTION */
+/* ROLE CLICK */
 document.querySelectorAll(".roleBtn").forEach(btn => {
     btn.onclick = () => {
         selectedRole = btn.dataset.role;
+
         document.getElementById("roleSelection").style.display = "none";
         document.getElementById("loginPage").style.display = "block";
         document.getElementById("roleTitle").textContent = selectedRole + " Login";
     };
 });
 
-/* LOGIN */
+/* VALIDATE LOGIN */
 function validateLogin() {
     let u = document.getElementById("username").value.trim();
     let p = document.getElementById("password").value.trim();
@@ -352,7 +349,7 @@ function validateLogin() {
     }
 }
 
-/* REMOVE EMOJIS BEFORE SPEAKING */
+/* REMOVE EMOJIS WHEN SPEAKING */
 function removeEmojis(text) {
     return text.replace(/[\p{Emoji}\p{Extended_Pictographic}]/gu, "");
 }
@@ -370,28 +367,34 @@ function showGreeting() {
     let speak = new SpeechSynthesisUtterance(speakText);
     window.speechSynthesis.speak(speak);
 
+    // Navigation after greeting
     setTimeout(() => {
         box.style.display = "none";
+
         if (selectedRole === "Candidate") {
             document.getElementById("candidateDashboard").style.display = "block";
             document.body.style.display = "block";
             document.body.style.padding = "40px";
+        } else {
+            // For Admin & Recruiter → Return to role selection
+            document.getElementById("roleSelection").style.display = "block";
+            document.body.style.display = "flex";
+            document.body.style.padding = "0";
         }
+
     }, 2500);
 }
 
 /* BACK BUTTON */
 function goBack() {
     document.getElementById("candidateDashboard").style.display = "none";
-    document.getElementById("roleSelection").style.display = "block";
-
-    // Reset layout to center
+    document.getElementById("loginPage").style.display = "block";
     document.body.style.display = "flex";
     document.body.style.padding = "0";
 }
 
-/* NEXT BUTTON (Placeholder) */
-function goNext() {
+/* NEXT BUTTON (You can add features later) */
+function nextPage() {
     alert("Next section coming soon!");
 }
 </script>
