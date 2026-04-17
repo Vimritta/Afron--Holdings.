@@ -16,6 +16,7 @@ body {
     align-items: center;
 }
 
+/* LOGIN BOX */
 .centerBox {
     background-color: #d4edda;
     padding: 40px;
@@ -72,12 +73,6 @@ button {
     transform: translate(-50%, -50%) scale(1);
 }
 
-/* DASHBOARD */
-#adminDashboard {
-    display: none;
-    width: 100%;
-}
-
 /* SIDEBAR */
 .sidebar {
     position: fixed;
@@ -89,6 +84,7 @@ button {
     padding-top: 20px;
     display: none;
 }
+
 .sidebar button {
     width: 100%;
     padding: 15px;
@@ -99,24 +95,41 @@ button {
     text-align: left;
     cursor: pointer;
 }
+
 .sidebar button:hover {
     background: #28a745;
 }
 
-/* CONTENT */
-.content {
-    margin-left: 250px;
-    padding: 20px;
+/* DASHBOARD CONTAINER */
+#adminDashboard {
     display: none;
+    width: 100%;
 }
 
-/* Cards */
+/* CENTERED CONTENT AREA */
+.content {
+    margin-left: 230px;
+    width: calc(100% - 230px);
+
+    display: flex;
+    justify-content: center;
+}
+
+/* INNER CONTENT BOX (CENTERED) */
+.contentInner {
+    max-width: 900px;
+    width: 100%;
+    padding: 20px;
+}
+
+/* CARDS */
 .cardContainer {
     display: grid;
     grid-template-columns: repeat(3,1fr);
     gap: 15px;
     margin-top: 20px;
 }
+
 .card {
     background: #e9f7ef;
     padding: 20px;
@@ -125,27 +138,28 @@ button {
     font-weight: bold;
 }
 
-/* Bar chart */
+/* CHART */
 .chartBar {
     display: flex;
     gap: 10px;
     margin-top: 20px;
+    justify-content: center;
 }
 .bar {
     width: 40px;
     background: green;
 }
 
-/* Pie chart */
+/* PIE */
 .pie {
     width: 120px;
     height: 120px;
     border-radius: 50%;
     background: conic-gradient(green 70%, lightgray 30%);
-    margin-top: 20px;
+    margin: 20px auto;
 }
 
-/* Tables */
+/* TABLE */
 table {
     width: 100%;
     margin-top: 20px;
@@ -155,17 +169,12 @@ td, th {
     border: 1px solid #ccc;
     padding: 8px;
 }
-
-/* nav back */
-.navButtons {
-    margin-top: 20px;
-}
 </style>
 </head>
 
 <body>
 
-<!-- ROLE SELECTION -->
+<!-- ROLE -->
 <div id="roleSelection" class="centerBox">
     <h2>Select Role</h2>
     <div class="roleBtn" data-role="Administrator">Admin</div>
@@ -173,7 +182,7 @@ td, th {
     <div class="roleBtn" data-role="Candidate">Candidate</div>
 </div>
 
-<!-- LOGIN PAGE -->
+<!-- LOGIN -->
 <div id="loginPage" class="centerBox" style="display:none;">
     <h2 id="roleTitle"></h2>
     <input id="username" placeholder="Username">
@@ -183,10 +192,6 @@ td, th {
 
 <!-- GREETING -->
 <div id="greetingMessage"></div>
-
-<!-- ADMIN DASHBOARD -->
-<div id="adminDashboard">
-</div>
 
 <!-- SIDEBAR -->
 <div id="sidebar" class="sidebar">
@@ -199,95 +204,93 @@ td, th {
     <button onclick="goBack()">⬅ Back</button>
 </div>
 
-<!-- MAIN CONTENT -->
-<div id="adminContent" class="content">
+<!-- DASHBOARD -->
+<div id="adminDashboard" class="content">
 
-    <!-- OVERVIEW -->
-    <div id="overviewSection">
-        <h2>Admin Dashboard</h2>
-        <div class="cardContainer">
-            <div class="card">Candidates: 120</div>
-            <div class="card">Recruiters: 12</div>
-            <div class="card">Departments: 5</div>
-            <div class="card">Ongoing Hiring: 8</div>
-            <div class="card">Pending Approvals: 14</div>
-        </div>
+<div class="contentInner">
 
-        <h3>Analytics</h3>
-        <div class="chartBar">
-            <div class="bar" style="height:100px;"></div>
-            <div class="bar" style="height:60px;"></div>
-            <div class="bar" style="height:80px;"></div>
-        </div>
+<!-- OVERVIEW -->
+<div id="overviewSection">
+    <h2 style="text-align:center;">Admin Dashboard</h2>
 
-        <div class="pie"></div>
+    <div class="cardContainer">
+        <div class="card">Candidates: 120</div>
+        <div class="card">Recruiters: 12</div>
+        <div class="card">Departments: 5</div>
+        <div class="card">Hiring: 8</div>
+        <div class="card">Pending: 14</div>
     </div>
 
-    <!-- USER MGMT -->
-    <div id="usersSection" style="display:none;">
-        <h2>User Management</h2>
+    <h3 style="text-align:center;">Analytics</h3>
 
-        <table>
-            <tr><th>Name</th><th>Action</th></tr>
-            <tr>
-                <td>John</td>
-                <td>
-                    <button>Remove</button>
-                    <button>Reset Password</button>
-                </td>
-            </tr>
-        </table>
-
-        <button>Add Recruiter</button>
-
-        <h3>Manage Candidates</h3>
-        <table>
-            <tr><th>Name</th><th>Status</th><th>Action</th></tr>
-            <tr>
-                <td>Alice</td>
-                <td>Active</td>
-                <td>
-                    <button>Suspend</button>
-                    <button>Approve</button>
-                </td>
-            </tr>
-        </table>
+    <div class="chartBar">
+        <div class="bar" style="height:100px;"></div>
+        <div class="bar" style="height:60px;"></div>
+        <div class="bar" style="height:80px;"></div>
     </div>
 
-    <!-- JOB POSTING -->
-    <div id="jobsSection" style="display:none;">
-        <h2>Job Posting Management</h2>
-        <button>Create Job Opening</button>
-        <button>Edit Job</button>
-        <button>Close Job</button>
-        <p>Applicants per job: 42</p>
-    </div>
+    <div class="pie"></div>
+</div>
 
-    <!-- INTERVIEW -->
-    <div id="interviewsSection" style="display:none;">
-        <h2>Interview Management</h2>
-        <p>Schedule interviews (Calendar)</p>
-        <p>Attach video call link</p>
-        <button>Send Email</button>
-        <button>Upload Evaluation Forms</button>
-    </div>
+<!-- USERS -->
+<div id="usersSection" style="display:none;">
+    <h2>User Management</h2>
 
-    <!-- MESSAGING -->
-    <div id="messagesSection" style="display:none;">
-        <h2>Messaging & Notifications</h2>
-        <button>Send Message</button>
-        <button>Notify Recruiter</button>
-    </div>
+    <table>
+        <tr><th>Name</th><th>Action</th></tr>
+        <tr>
+            <td>John</td>
+            <td>
+                <button>Remove</button>
+                <button>Reset Password</button>
+            </td>
+        </tr>
+    </table>
 
-    <!-- PERFORMANCE -->
-    <div id="performanceSection" style="display:none;">
-        <h2>Recruiter Performance</h2>
-        <p>Candidates processed: 57</p>
-        <p>Interviews done: 21</p>
-        <p>Conversion rate: 62%</p>
-        <p>Pending tasks: 3</p>
-    </div>
+    <button>Add Recruiter</button>
 
+    <h3>Manage Candidates</h3>
+    <table>
+        <tr><th>Name</th><th>Status</th><th>Action</th></tr>
+        <tr>
+            <td>Alice</td>
+            <td>Active</td>
+            <td>
+                <button>Suspend</button>
+                <button>Approve</button>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<!-- JOBS -->
+<div id="jobsSection" style="display:none;">
+    <h2>Job Posting</h2>
+    <button>Create Job</button>
+    <button>Edit Job</button>
+    <button>Close Job</button>
+</div>
+
+<!-- INTERVIEWS -->
+<div id="interviewsSection" style="display:none;">
+    <h2>Interview Management</h2>
+    <p>Schedule interviews</p>
+    <button>Send Email</button>
+</div>
+
+<!-- MESSAGES -->
+<div id="messagesSection" style="display:none;">
+    <h2>Messaging</h2>
+    <button>Send Message</button>
+</div>
+
+<!-- PERFORMANCE -->
+<div id="performanceSection" style="display:none;">
+    <h2>Performance</h2>
+    <p>Conversion Rate: 60%</p>
+</div>
+
+</div>
 </div>
 
 <script>
@@ -305,14 +308,14 @@ const greetings = {
 
 let selectedRole = "";
 
-/* ROLE SELECT */
+/* ROLE */
 document.querySelectorAll(".roleBtn").forEach(btn=>{
     btn.onclick=()=>{
         selectedRole = btn.dataset.role;
         roleSelection.style.display="none";
         loginPage.style.display="block";
         roleTitle.innerText=selectedRole;
-    };
+    }
 });
 
 /* LOGIN */
@@ -320,50 +323,42 @@ function validateLogin(){
     let u = username.value.trim();
     let p = password.value.trim();
 
-    if(u === credentials[selectedRole].user && p === credentials[selectedRole].pass){
+    if(u===credentials[selectedRole].user && p===credentials[selectedRole].pass){
         showGreeting();
-    } else {
-        alert("Invalid login");
-    }
+    } else alert("Invalid login");
 }
 
 /* GREETING */
 function showGreeting(){
     loginPage.style.display="none";
-
-    greetingMessage.innerText = greetings[selectedRole];
+    greetingMessage.innerText=greetings[selectedRole];
     greetingMessage.classList.add("show");
 
     setTimeout(()=>{
         greetingMessage.style.display="none";
 
         if(selectedRole==="Administrator"){
-            adminDashboard.style.display="block";
             sidebar.style.display="block";
-            adminContent.style.display="block";
+            adminDashboard.style.display="flex";
         } else {
             roleSelection.style.display="block";
         }
-    }, 2000);
+
+    },2000);
 }
 
-/* SIDEBAR SECTION SWITCH */
+/* NAVIGATION */
 function showSection(section){
-    document.getElementById("overviewSection").style.display="none";
-    document.getElementById("usersSection").style.display="none";
-    document.getElementById("jobsSection").style.display="none";
-    document.getElementById("interviewsSection").style.display="none";
-    document.getElementById("messagesSection").style.display="none";
-    document.getElementById("performanceSection").style.display="none";
-
-    document.getElementById(section + "Section").style.display="block";
+    document.querySelectorAll("#adminDashboard > div > div").forEach(sec=>{
+        sec.style.display="none";
+    });
+    document.getElementById(section+"Section").style.display="block";
 }
 
 /* BACK */
 function goBack(){
     adminDashboard.style.display="none";
     sidebar.style.display="none";
-    adminContent.style.display="none";
     roleSelection.style.display="block";
 }
 </script>
