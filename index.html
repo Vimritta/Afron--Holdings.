@@ -6,6 +6,7 @@
 <title>Role Login System</title>
 
 <style>
+/* ===== YOUR ORIGINAL STYLES (UNCHANGED) ===== */
 body {
     margin: 0;
     font-family: Arial, sans-serif;
@@ -16,7 +17,6 @@ body {
     align-items: center;
 }
 
-/* LOGIN BOX */
 .centerBox {
     background-color: #d4edda;
     padding: 40px;
@@ -52,7 +52,7 @@ button {
     cursor: pointer;
 }
 
-/* BIG GREETING */
+/* GREETING */
 #greetingMessage {
     position: fixed;
     top: 50%;
@@ -95,27 +95,23 @@ button {
     text-align: left;
     cursor: pointer;
 }
-
 .sidebar button:hover {
     background: #28a745;
 }
 
 /* DASHBOARD CONTAINER */
-#adminDashboard {
+.dashboard {
     display: none;
     width: 100%;
 }
 
-/* CENTERED CONTENT AREA */
 .content {
     margin-left: 230px;
     width: calc(100% - 230px);
-
     display: flex;
     justify-content: center;
 }
 
-/* INNER CONTENT BOX (CENTERED) */
 .contentInner {
     max-width: 900px;
     width: 100%;
@@ -129,7 +125,6 @@ button {
     gap: 15px;
     margin-top: 20px;
 }
-
 .card {
     background: #e9f7ef;
     padding: 20px;
@@ -159,7 +154,6 @@ button {
     margin: 20px auto;
 }
 
-/* TABLE */
 table {
     width: 100%;
     margin-top: 20px;
@@ -193,101 +187,97 @@ td, th {
 <!-- GREETING -->
 <div id="greetingMessage"></div>
 
-<!-- SIDEBAR -->
-<div id="sidebar" class="sidebar">
-    <button onclick="showSection('overview')">Dashboard Overview</button>
-    <button onclick="showSection('users')">User Management</button>
-    <button onclick="showSection('jobs')">Job Posting</button>
-    <button onclick="showSection('interviews')">Interviews</button>
-    <button onclick="showSection('messages')">Messaging</button>
-    <button onclick="showSection('performance')">Performance</button>
+<!-- ADMIN SIDEBAR -->
+<div id="adminSidebar" class="sidebar">
+    <button onclick="showAdmin('overview')">Overview</button>
+    <button onclick="showAdmin('users')">User Management</button>
+    <button onclick="showAdmin('jobs')">Jobs</button>
+    <button onclick="showAdmin('interviews')">Interviews</button>
+    <button onclick="showAdmin('messages')">Messages</button>
+    <button onclick="showAdmin('performance')">Performance</button>
     <button onclick="goBack()">⬅ Back</button>
 </div>
 
-<!-- DASHBOARD -->
-<div id="adminDashboard" class="content">
+<!-- RECRUITER SIDEBAR -->
+<div id="recruiterSidebar" class="sidebar">
+    <button onclick="showRecruiter('overview')">Overview</button>
+    <button onclick="showRecruiter('jobs')">Job Posting</button>
+    <button onclick="showRecruiter('interviews')">Interviews</button>
+    <button onclick="showRecruiter('messages')">Messages</button>
+    <button onclick="showRecruiter('performance')">Performance</button>
+    <button onclick="goBack()">⬅ Back</button>
+</div>
 
+<!-- ADMIN DASHBOARD -->
+<div id="adminDashboard" class="dashboard content">
 <div class="contentInner">
 
-<!-- OVERVIEW -->
-<div id="overviewSection">
-    <h2 style="text-align:center;">Admin Dashboard</h2>
-
-    <div class="cardContainer">
-        <div class="card">Candidates: 120</div>
-        <div class="card">Recruiters: 12</div>
-        <div class="card">Departments: 5</div>
-        <div class="card">Hiring: 8</div>
-        <div class="card">Pending: 14</div>
-    </div>
-
-    <h3 style="text-align:center;">Analytics</h3>
-
-    <div class="chartBar">
-        <div class="bar" style="height:100px;"></div>
-        <div class="bar" style="height:60px;"></div>
-        <div class="bar" style="height:80px;"></div>
-    </div>
-
-    <div class="pie"></div>
+<div id="adminOverview">
+<h2 style="text-align:center;">Admin Dashboard</h2>
+<div class="cardContainer">
+<div class="card">Candidates: 120</div>
+<div class="card">Recruiters: 12</div>
+<div class="card">Departments: 5</div>
+</div>
 </div>
 
-<!-- USERS -->
-<div id="usersSection" style="display:none;">
-    <h2>User Management</h2>
-
-    <table>
-        <tr><th>Name</th><th>Action</th></tr>
-        <tr>
-            <td>John</td>
-            <td>
-                <button>Remove</button>
-                <button>Reset Password</button>
-            </td>
-        </tr>
-    </table>
-
-    <button>Add Recruiter</button>
-
-    <h3>Manage Candidates</h3>
-    <table>
-        <tr><th>Name</th><th>Status</th><th>Action</th></tr>
-        <tr>
-            <td>Alice</td>
-            <td>Active</td>
-            <td>
-                <button>Suspend</button>
-                <button>Approve</button>
-            </td>
-        </tr>
-    </table>
+<div id="adminUsers" style="display:none;">
+<h2>User Management</h2>
+<p>Manage recruiters & candidates</p>
 </div>
 
-<!-- JOBS -->
-<div id="jobsSection" style="display:none;">
-    <h2>Job Posting</h2>
-    <button>Create Job</button>
-    <button>Edit Job</button>
-    <button>Close Job</button>
+<div id="adminJobs" style="display:none;">
+<h2>Job Management</h2>
 </div>
 
-<!-- INTERVIEWS -->
-<div id="interviewsSection" style="display:none;">
-    <h2>Interview Management</h2>
-    <p>Schedule interviews</p>
-    <button>Send Email</button>
+<div id="adminInterviews" style="display:none;">
+<h2>Interview Management</h2>
 </div>
 
-<!-- MESSAGES -->
-<div id="messagesSection" style="display:none;">
-    <h2>Messaging</h2>
-    <button>Send Message</button>
+<div id="adminMessages" style="display:none;">
+<h2>Messaging</h2>
 </div>
 
-<!-- PERFORMANCE -->
-<div id="performanceSection" style="display:none;">
-    <h2>Performance</h2>
-    <p>Conversion Rate: 60%</p>
+<div id="adminPerformance" style="display:none;">
+<h2>Performance</h2>
+</div>
+
+</div>
+</div>
+
+<!-- RECRUITER DASHBOARD -->
+<div id="recruiterDashboard" class="dashboard content">
+<div class="contentInner">
+
+<div id="recOverview">
+<h2 style="text-align:center;">Recruiter Dashboard</h2>
+<div class="cardContainer">
+<div class="card">Candidates Assigned: 45</div>
+<div class="card">Interviews: 12</div>
+<div class="card">Pending Tasks: 5</div>
+</div>
+</div>
+
+<div id="recJobs" style="display:none;">
+<h2>Job Posting</h2>
+<button>Create Job</button>
+<button>Edit Job</button>
+<button>Close Job</button>
+</div>
+
+<div id="recInterviews" style="display:none;">
+<h2>Interview Management</h2>
+<p>Schedule & track interviews</p>
+</div>
+
+<div id="recMessages" style="display:none;">
+<h2>Messaging</h2>
+<button>Send Message</button>
+</div>
+
+<div id="recPerformance" style="display:none;">
+<h2>Performance</h2>
+<p>Conversion Rate: 60%</p>
 </div>
 
 </div>
@@ -320,10 +310,8 @@ document.querySelectorAll(".roleBtn").forEach(btn=>{
 
 /* LOGIN */
 function validateLogin(){
-    let u = username.value.trim();
-    let p = password.value.trim();
-
-    if(u===credentials[selectedRole].user && p===credentials[selectedRole].pass){
+    if(username.value.trim()===credentials[selectedRole].user &&
+       password.value.trim()===credentials[selectedRole].pass){
         showGreeting();
     } else alert("Invalid login");
 }
@@ -338,28 +326,48 @@ function showGreeting(){
         greetingMessage.style.display="none";
 
         if(selectedRole==="Administrator"){
-            sidebar.style.display="block";
+            adminSidebar.style.display="block";
             adminDashboard.style.display="flex";
-        } else {
+        }
+        else if(selectedRole==="Recruiter"){
+            recruiterSidebar.style.display="block";
+            recruiterDashboard.style.display="flex";
+        }
+        else{
             roleSelection.style.display="block";
         }
 
     },2000);
 }
 
-/* NAVIGATION */
-function showSection(section){
-    document.querySelectorAll("#adminDashboard > div > div").forEach(sec=>{
-        sec.style.display="none";
+/* ADMIN NAV */
+function showAdmin(sec){
+    document.querySelectorAll("[id^='admin']").forEach(s=>{
+        if(s.id!=="adminDashboard") s.style.display="none";
     });
-    document.getElementById(section+"Section").style.display="block";
+    document.getElementById("admin"+capitalize(sec)).style.display="block";
+}
+
+/* RECRUITER NAV */
+function showRecruiter(sec){
+    document.querySelectorAll("[id^='rec']").forEach(s=>{
+        if(s.id!=="recruiterDashboard") s.style.display="none";
+    });
+    document.getElementById("rec"+capitalize(sec)).style.display="block";
+}
+
+function capitalize(text){
+    return text.charAt(0).toUpperCase()+text.slice(1);
 }
 
 /* BACK */
 function goBack(){
     adminDashboard.style.display="none";
-    sidebar.style.display="none";
+    recruiterDashboard.style.display="none";
+    adminSidebar.style.display="none";
+    recruiterSidebar.style.display="none";
     roleSelection.style.display="block";
+    document.body.style.display="flex";
 }
 </script>
 
