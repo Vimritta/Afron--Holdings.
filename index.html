@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Role Login System</title>
 
+<!-- ADDED: Chart.js Library -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <style>
 body {
     margin: 0;
@@ -230,6 +233,17 @@ td, th {
     </div>
 
     <div class="pie"></div>
+
+    <!-- ADDED: REAL CHARTJS CHARTS -->
+    <h3 style="margin-top:40px; text-align:center;">Recruitment Activity (Monthly)</h3>
+    <canvas id="barChart" height="150"></canvas>
+
+    <h3 style="margin-top:40px; text-align:center;">Candidate Status Distribution</h3>
+    <canvas id="pieChart" height="150"></canvas>
+
+    <h3 style="margin-top:40px; text-align:center;">Experience vs Performance (Scatter)</h3>
+    <canvas id="scatterChart" height="150"></canvas>
+
 </div>
 
 <!-- USERS -->
@@ -361,6 +375,61 @@ function goBack(){
     sidebar.style.display="none";
     roleSelection.style.display="block";
 }
+
+/* ADDED: REAL CHARTS INITIALIZATION */
+document.addEventListener("DOMContentLoaded", () => {
+
+    /* BAR CHART */
+    new Chart(document.getElementById("barChart"), {
+        type: "bar",
+        data: {
+            labels: ["Jan", "Feb", "Mar", "Apr", "May"],
+            datasets: [{
+                label: "New Candidates",
+                data: [50, 70, 40, 90, 60],
+                backgroundColor: "green"
+            }]
+        }
+    });
+
+    /* PIE CHART */
+    new Chart(document.getElementById("pieChart"), {
+        type: "pie",
+        data: {
+            labels: ["Selected", "Pending", "Rejected"],
+            datasets: [{
+                data: [55, 25, 20],
+                backgroundColor: ["green", "#cccccc", "#999999"]
+            }]
+        }
+    });
+
+    /* SCATTER CHART */
+    new Chart(document.getElementById("scatterChart"), {
+        type: "scatter",
+        data: {
+            datasets: [{
+                label: "Experience vs Performance",
+                data: [
+                    { x: 1, y: 60 },
+                    { x: 2, y: 65 },
+                    { x: 3, y: 70 },
+                    { x: 4, y: 75 },
+                    { x: 5, y: 90 },
+                    { x: 6, y: 95 }
+                ],
+                backgroundColor: "green"
+            }]
+        },
+        options: {
+            scales: {
+                x: { title: { display: true, text: "Years of Experience" }},
+                y: { title: { display: true, text: "Performance Score" }}
+            }
+        }
+    });
+
+});
 </script>
 
 </body>
