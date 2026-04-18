@@ -3,235 +3,476 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Dashboard</title>
-
-<!-- Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<title>Role Login System</title>
 
 <style>
-    body{
-        margin:0;
-        font-family:Arial, Helvetica, sans-serif;
-        background:#f4f4f4;
-        display:flex;
-    }
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f2fff2;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-    /* Sidebar */
-    .sidebar{
-        width:250px;
-        background:#0d1b2a;
-        color:white;
-        height:100vh;
-        padding-top:20px;
-        position:fixed;
-    }
-    .sidebar h2{
-        text-align:center;
-        margin-bottom:20px;
-    }
-    .sidebar a{
-        display:block;
-        padding:15px;
-        text-decoration:none;
-        color:white;
-        border-bottom:1px solid #1b263b;
-        cursor:pointer;
-    }
-    .sidebar a:hover{
-        background:#1b263b;
-    }
+/* LOGIN BOX */
+.centerBox {
+    background-color: #d4edda;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+    width: 320px;
+    text-align: center;
+}
 
-    /* Main Area */
-    .main{
-        margin-left:260px;
-        padding:20px;
-        width:100%;
-    }
+.roleBtn {
+    margin: 12px 0;
+    padding: 15px;
+    font-size: 22px;
+    background: #c3e6cb;
+    border: 2px solid #155724;
+    border-radius: 12px;
+    cursor: pointer;
+}
 
-    h1{
-        background:#1b263b;
-        color:white;
-        padding:10px;
-        border-radius:5px;
-        width:fit-content;
-    }
+input {
+    width: 90%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 2px solid #155724;
+    margin-bottom: 15px;
+}
 
-    .chart-container{
-        width:600px;
-        height:400px;
-        background:white;
-        padding:20px;
-        border-radius:10px;
-        box-shadow:0 0 10px rgba(0,0,0,0.1);
-        margin-bottom:40px;
-    }
+button {
+    padding: 12px 25px;
+    background: green;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+/* BIG GREETING */
+#greetingMessage {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 60%;
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0;
+    background: white;
+    padding: 50px;
+    border-radius: 20px;
+    font-size: 32px;
+    text-align: center;
+    transition: 0.5s;
+    z-index: 2000;
+}
+#greetingMessage.show {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* SIDEBAR */
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 230px;
+    height: 100%;
+    background: #155724;
+    padding-top: 20px;
+    display: none;
+}
+
+.sidebar button {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    font-size: 16px;
+    background: none;
+    color: white;
+    text-align: left;
+    cursor: pointer;
+}
+
+.sidebar button:hover {
+    background: #28a745;
+}
+
+/* DASHBOARD CONTAINER */
+#adminDashboard {
+    display: none;
+    width: 100%;
+}
+
+/* CENTERED CONTENT AREA */
+.content {
+    margin-left: 230px;
+    width: calc(100% - 230px);
+    display: flex;
+    justify-content: center;
+}
+
+/* INNER CONTENT BOX */
+.contentInner {
+    max-width: 900px;
+    width: 100%;
+    padding: 20px;
+}
+
+/* CARDS */
+.cardContainer {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.card {
+    background: #e9f7ef;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* CHART */
+.chartBar {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    justify-content: center;
+}
+.bar {
+    width: 40px;
+    background: green;
+}
+
+/* PIE */
+.pie {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: conic-gradient(green 70%, lightgray 30%);
+    margin: 20px auto;
+}
+
+/* TABLE */
+table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+td, th {
+    border: 1px solid #ccc;
+    padding: 8px;
+}
 </style>
 </head>
+
 <body>
 
-<!-- Sidebar -->
-<div class="sidebar">
-    <h2>Admin Panel</h2>
-    <a onclick="showSection('analytics')">Analytics</a>
-    <a onclick="showSection('userManagement')">User Management</a>
-    <a onclick="showSection('jobPosting')">Job Posting</a>
-    <a onclick="showSection('interviews')">Interviews</a>
-    <a onclick="showSection('messaging')">Messaging</a>
-    <a onclick="showSection('performance')">Performance</a>
+<!-- ROLE -->
+<div id="roleSelection" class="centerBox">
+    <h2>Select Role</h2>
+    <div class="roleBtn" data-role="Administrator">Admin</div>
+    <div class="roleBtn" data-role="Recruiter">Recruiter</div>
+    <div class="roleBtn" data-role="Candidate">Candidate</div>
 </div>
 
-<!-- Main -->
-<div class="main">
-
-<!-- ANALYTICS SECTION -->
-<div id="analytics" class="section">
-    <h1>Analytics Dashboard</h1>
-    <p><b>This section provides overall system analytics including candidate trends, traffic activity, and performance correlation.</b></p>
-
-    <div class="chart-container">
-        <h3>Scatter Chart – Candidate Trend Analysis</h3>
-        <canvas id="scatterChart"></canvas>
-    </div>
+<!-- LOGIN -->
+<div id="loginPage" class="centerBox" style="display:none;">
+    <h2 id="roleTitle"></h2>
+    <input id="username" placeholder="Username">
+    <input id="password" type="password" placeholder="Password">
+    <button onclick="validateLogin()">Login</button>
 </div>
 
-<!-- USER MANAGEMENT -->
-<div id="userManagement" class="section" style="display:none;">
-    <h1>User Management</h1>
-    <p>Shows registered users, active accounts, and user growth.</p>
+<!-- GREETING -->
+<div id="greetingMessage"></div>
 
-    <div class="chart-container">
-        <h3>Bar Chart – Monthly New Users</h3>
-        <canvas id="userBarChart"></canvas>
-    </div>
+<!-- SIDEBAR -->
+<div id="sidebar" class="sidebar">
+    <button onclick="showSection('overview')">Dashboard Overview</button>
+    <button onclick="showSection('users')">User Management</button>
+    <button onclick="showSection('jobs')">Job Posting</button>
+    <button onclick="showSection('interviews')">Interviews</button>
+    <button onclick="showSection('messages')">Messaging</button>
+    <button onclick="showSection('performance')">Performance</button>
+    <button onclick="goBack()">⬅ Back</button>
 </div>
 
-<!-- JOB POSTING -->
-<div id="jobPosting" class="section" style="display:none;">
-    <h1>Job Posting</h1>
-    <p>Distribution of job categories posted on the platform.</p>
+<!-- DASHBOARD -->
+<div id="adminDashboard" class="content">
 
-    <div class="chart-container">
-        <h3>Pie Chart – Job Categories</h3>
-        <canvas id="jobPieChart"></canvas>
+<div class="contentInner">
+
+<!-- OVERVIEW -->
+<div id="overviewSection">
+    <h2 style="text-align:center;">Admin Dashboard</h2>
+
+    <div class="cardContainer">
+        <div class="card">Candidates: 120</div>
+        <div class="card">Recruiters: 12</div>
+        <div class="card">Departments: 5</div>
+        <div class="card">Hiring: 8</div>
+        <div class="card">Pending: 14</div>
     </div>
+
+    <h3 style="text-align:center;">Analytics</h3>
+
+    <div class="chartBar">
+        <div class="bar" style="height:100px;"></div>
+        <div class="bar" style="height:60px;"></div>
+        <div class="bar" style="height:80px;"></div>
+    </div>
+
+    <div class="pie"></div>
+
+    <h3 style="text-align:center;">Recruitment Trend (Scatter + Line)</h3>
+    <canvas id="overviewScatter" width="400" height="200"></canvas>
+</div>
+
+<!-- USERS -->
+<div id="usersSection" style="display:none;">
+    <h2>User Management</h2>
+
+    <table>
+        <tr><th>Name</th><th>Action</th></tr>
+        <tr>
+            <td>John</td>
+            <td>
+                <button>Remove</button>
+                <button>Reset Password</button>
+            </td>
+        </tr>
+    </table>
+
+    <button>Add Recruiter</button>
+
+    <h3>Manage Candidates</h3>
+    <table>
+        <tr><th>Name</th><th>Status</th><th>Action</th></tr>
+        <tr>
+            <td>Alice</td>
+            <td>Active</td>
+            <td>
+                <button>Suspend</button>
+                <button>Approve</button>
+            </td>
+        </tr>
+    </table>
+
+    <h3>User Activity Chart</h3>
+    <canvas id="userBarChart" width="400" height="200"></canvas>
+</div>
+
+<!-- JOBS -->
+<div id="jobsSection" style="display:none;">
+    <h2>Job Posting</h2>
+
+    <button>Create Job</button>
+    <button>Edit Job</button>
+    <button>Close Job</button>
+
+    <h3>Job Status Distribution</h3>
+    <canvas id="jobsPieChart" width="300" height="300"></canvas>
 </div>
 
 <!-- INTERVIEWS -->
-<div id="interviews" class="section" style="display:none;">
-    <h1>Interviews</h1>
-    <p>Weekly interview schedule and trends.</p>
+<div id="interviewsSection" style="display:none;">
+    <h2>Interview Management</h2>
+    <p>Schedule interviews</p>
+    <button>Send Email</button>
 
-    <div class="chart-container">
-        <h3>Line Chart – Weekly Interviews</h3>
-        <canvas id="interviewLineChart"></canvas>
-    </div>
+    <h3>Interview Timeline</h3>
+    <canvas id="interviewLineChart" width="400" height="200"></canvas>
 </div>
 
-<!-- MESSAGING -->
-<div id="messaging" class="section" style="display:none;">
-    <h1>Messaging</h1>
-    <p>Message frequency between recruiters and candidates.</p>
+<!-- MESSAGES -->
+<div id="messagesSection" style="display:none;">
+    <h2>Messaging</h2>
+    <button>Send Message</button>
 
-    <div class="chart-container">
-        <h3>Radar Chart – Message Types</h3>
-        <canvas id="messageRadarChart"></canvas>
-    </div>
+    <h3>Message Type Breakdown</h3>
+    <canvas id="messageDonutChart" width="300" height="300"></canvas>
 </div>
 
 <!-- PERFORMANCE -->
-<div id="performance" class="section" style="display:none;">
-    <h1>Performance Dashboard</h1>
-    <p>Tracks system performance and recruiter activity.</p>
+<div id="performanceSection" style="display:none;">
+    <h2>Performance</h2>
+    <p>Conversion Rate: 60%</p>
 
-    <div class="chart-container">
-        <h3>Doughnut Chart – Recruiter Activity</h3>
-        <canvas id="performanceDoughnutChart"></canvas>
-    </div>
+    <h3>Team Performance Radar</h3>
+    <canvas id="performanceRadar" width="400" height="200"></canvas>
 </div>
 
 </div>
+</div>
+
+<!-- CHART.JS -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-// SECTION SWITCHING
-function showSection(sectionID){
-    document.querySelectorAll('.section').forEach(sec => sec.style.display='none');
-    document.getElementById(sectionID).style.display='block';
-}
 
-/* -------------------- ANALYTICS SCATTER CHART -------------------- */
-const scatterData = {
-    datasets: [{
-        label: "Candidate Score vs Experience",
-        data: [
-            {x:1, y:40}, {x:2, y:45}, {x:3, y:50}, {x:4, y:70},{x:5, y:90}
-        ],
-        backgroundColor: "blue",
-        borderColor: "blue",
-        showLine: true,
-        borderWidth: 2,
-        tension: 0.4
-    }]
+/* LOGIN SYSTEM DATA */
+const credentials = {
+    Administrator: { user: "@admin", pass: "@admin9090" },
+    Recruiter: { user: "@Re", pass: "@Re9090" },
+    Candidate: { user: "@Ca", pass: "@Ca9090" }
 };
 
-new Chart(document.getElementById('scatterChart'), {
-    type: 'scatter',
-    data: scatterData
+const greetings = {
+    Administrator: "Welcome Admin! 🌟",
+    Recruiter: "Welcome Recruiter! 🤝",
+    Candidate: "Welcome Candidate! 🎯"
+};
+
+let selectedRole = "";
+
+/* ROLE SELECTION */
+document.querySelectorAll(".roleBtn").forEach(btn=>{
+    btn.onclick=()=>{
+        selectedRole = btn.dataset.role;
+        roleSelection.style.display="none";
+        loginPage.style.display="block";
+        roleTitle.innerText=selectedRole;
+    }
 });
 
-/* ---------------- USER MANAGEMENT – BAR CHART ---------------- */
-new Chart(document.getElementById('userBarChart'), {
-    type: 'bar',
+/* LOGIN VALIDATION */
+function validateLogin(){
+    let u = username.value.trim();
+    let p = password.value.trim();
+
+    if(u===credentials[selectedRole].user && p===credentials[selectedRole].pass){
+        showGreeting();
+    } else alert("Invalid login");
+}
+
+/* GREETING ANIMATION */
+function showGreeting(){
+    loginPage.style.display="none";
+    greetingMessage.innerText=greetings[selectedRole];
+    greetingMessage.classList.add("show");
+
+    setTimeout(()=>{
+        greetingMessage.style.display="none";
+
+        if(selectedRole==="Administrator"){
+            sidebar.style.display="block";
+            adminDashboard.style.display="flex";
+        } else {
+            roleSelection.style.display="block";
+        }
+
+    },2000);
+}
+
+/* PAGE NAVIGATION */
+function showSection(section){
+    document.querySelectorAll("#adminDashboard > div > div").forEach(sec=>{
+        sec.style.display="none";
+    });
+    document.getElementById(section+"Section").style.display="block";
+}
+
+/* BACK */
+function goBack(){
+    adminDashboard.style.display="none";
+    sidebar.style.display="none";
+    roleSelection.style.display="block";
+}
+
+
+
+
+
+
+/* ============================
+   📊 CHARTS START HERE
+   ============================ */
+
+/* Overview Scatter + Line */
+new Chart(document.getElementById("overviewScatter"), {
+    type: "line",
     data: {
-        labels: ["Jan","Feb","Mar","Apr","May"],
+        labels: ["Jan","Feb","Mar","Apr","May","Jun"],
         datasets: [{
-            label:"New Users",
-            data:[120,150,180,220,260]
+            label: "Applicants Trend",
+            data: [12,19,7,14,20,16],
+            borderColor: "green",
+            backgroundColor: "darkgreen",
+            pointRadius: 6,
+            tension: 0.4
         }]
     }
 });
 
-/* ---------------- JOB POSTING – PIE CHART ---------------- */
-new Chart(document.getElementById('jobPieChart'), {
-    type:'pie',
-    data:{
-        labels:["IT","HR","Finance","Marketing"],
-        datasets:[{
-            data:[40,20,25,15]
+/* User Management Bar Chart */
+new Chart(document.getElementById("userBarChart"), {
+    type: "bar",
+    data: {
+        labels: ["Admins","Recruiters","Candidates"],
+        datasets: [{
+            label: "User Count",
+            data: [5,12,120],
+            backgroundColor: ["#2ecc71","#27ae60","#1e8449"]
         }]
     }
 });
 
-/* ---------------- INTERVIEWS – LINE CHART ---------------- */
-new Chart(document.getElementById('interviewLineChart'), {
-    type:'line',
-    data:{
-        labels:["Mon","Tue","Wed","Thu","Fri"],
-        datasets:[{
-            label:"Interviews",
-            data:[5,8,6,10,12]
+/* Job Posting Pie Chart */
+new Chart(document.getElementById("jobsPieChart"), {
+    type: "pie",
+    data: {
+        labels: ["Open","Closed","Draft"],
+        datasets: [{
+            data: [10,4,2],
+            backgroundColor: ["#1abc9c","#16a085","#0e6655"]
         }]
     }
 });
 
-/* ---------------- MESSAGING – RADAR CHART ---------------- */
-new Chart(document.getElementById('messageRadarChart'), {
-    type:'radar',
-    data:{
-        labels:["Sent","Received","Unread","Follow-ups"],
-        datasets:[{
-            label:"Messages",
-            data:[120,150,30,90]
+/* Interview Line Chart */
+new Chart(document.getElementById("interviewLineChart"), {
+    type: "line",
+    data: {
+        labels: ["Mon","Tue","Wed","Thu","Fri"],
+        datasets: [{
+            label: "Interviews Scheduled",
+            data: [3,5,2,6,4],
+            borderColor: "#8e44ad",
+            pointBackgroundColor: "#5b2c6f",
+            pointRadius: 6,
+            tension: 0.3
         }]
     }
 });
 
-/* ---------------- PERFORMANCE – DOUGHNUT CHART ---------------- */
-new Chart(document.getElementById('performanceDoughnutChart'), {
-    type:'doughnut',
-    data:{
-        labels:["Active","Idle","Completed Tasks"],
-        datasets:[{
-            data:[60,20,30]
+/* Messaging Donut Chart */
+new Chart(document.getElementById("messageDonutChart"), {
+    type: "doughnut",
+    data: {
+        labels: ["Emails","SMS","In-App"],
+        datasets: [{
+            data: [40,25,35],
+            backgroundColor: ["#f1c40f","#f39c12","#d68910"]
+        }]
+    }
+});
+
+/* Performance Radar Chart */
+new Chart(document.getElementById("performanceRadar"), {
+    type: "radar",
+    data: {
+        labels: ["Speed","Accuracy","Quality","Conversion","Teamwork"],
+        datasets: [{
+            label: "Performance Score",
+            data: [80,70,85,60,75],
+            borderColor: "green",
+            backgroundColor: "rgba(0,128,0,0.3)"
         }]
     }
 });
