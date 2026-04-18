@@ -135,11 +135,10 @@ button {
     font-weight: bold;
 }
 
-/* CHARTS */
+/* BAR */
 .chartBar {
     display: flex;
     gap: 10px;
-    margin-top: 20px;
     justify-content: center;
 }
 .bar {
@@ -147,7 +146,7 @@ button {
     background: green;
 }
 
-/* PIE */
+/* SMALL PIE */
 .pie {
     width: 90px;
     height: 90px;
@@ -156,24 +155,21 @@ button {
     margin: 20px auto;
 }
 
-/* SCATTER CHART */
+/* SCATTER */
 #scatterChart {
     width: 300px;
-    height: 220px;
-    background: white;
-    border: 2px solid #155724;
-    margin: 15px auto;
+    height: 200px;
+    margin: auto;
+    border: 1px solid #ccc;
     position: relative;
 }
-
 .dot {
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
     background: red;
     border-radius: 50%;
     position: absolute;
 }
-
 .line {
     position: absolute;
     height: 2px;
@@ -221,151 +217,139 @@ button {
 
 <!-- OVERVIEW -->
 <div id="overviewSection">
-    <h2 style="text-align:center;">Admin Dashboard</h2>
+<h2 style="text-align:center;">Admin Dashboard</h2>
 
-    <div class="cardContainer">
-        <div class="card">Candidates: 120</div>
-        <div class="card">Recruiters: 12</div>
-        <div class="card">Departments: 5</div>
-        <div class="card">Hiring: 8</div>
-        <div class="card">Pending: 14</div>
-    </div>
-
-    <h3 style="text-align:center; margin-top:30px;">Analytics Overview</h3>
-
-    <!-- BAR CHART -->
-    <h4 style="text-align:center;">📊 Monthly Registrations</h4>
-    <div class="chartBar">
-        <div class="bar" style="height:100px;"></div>
-        <div class="bar" style="height:60px;"></div>
-        <div class="bar" style="height:80px;"></div>
-    </div>
-
-    <!-- PIE CHART -->
-    <h4 style="text-align:center;">🟢 Status Distribution</h4>
-    <div class="pie"></div>
-
-    <!-- SCATTER CHART -->
-    <h4 style="text-align:center;">🔵 Performance Trend</h4>
-    <div id="scatterChart"></div>
-
+<div class="cardContainer">
+    <div class="card">Candidates: 120</div>
+    <div class="card">Recruiters: 12</div>
+    <div class="card">Departments: 5</div>
+    <div class="card">Hiring: 8</div>
+    <div class="card">Pending: 14</div>
 </div>
 
-<!-- OTHER SECTIONS... unchanged -->
+<h3 style="text-align:center;">Analytics</h3>
+
+<div class="chartBar">
+    <div class="bar" style="height:100px;"></div>
+    <div class="bar" style="height:60px;"></div>
+    <div class="bar" style="height:80px;"></div>
+</div>
+
+<div class="pie"></div>
+
+<h4 style="text-align:center;">Performance Trend</h4>
+<div id="scatterChart"></div>
+</div>
+
+<!-- USERS -->
+<div id="usersSection" style="display:none;">
+<h2>User Management</h2>
+</div>
+
+<!-- JOBS -->
+<div id="jobsSection" style="display:none;">
+<h2>Job Posting</h2>
+</div>
+
+<!-- INTERVIEWS -->
+<div id="interviewsSection" style="display:none;">
+<h2>Interview Management</h2>
+</div>
+
+<!-- MESSAGES -->
+<div id="messagesSection" style="display:none;">
+<h2>Messaging</h2>
+</div>
+
+<!-- PERFORMANCE -->
+<div id="performanceSection" style="display:none;">
+<h2>Performance</h2>
+</div>
 
 </div>
 </div>
 
 <script>
 const credentials = {
-    Administrator: { user: "@admin", pass: "@admin9090" },
-    Recruiter: { user: "@Re", pass: "@Re9090" },
-    Candidate: { user: "@Ca", pass: "@Ca9090" }
-};
-
-const greetings = {
-    Administrator: "Welcome Admin! 🌟",
-    Recruiter: "Welcome Recruiter! 🤝",
-    Candidate: "Welcome Candidate! 🎯"
+Administrator: { user: "@admin", pass: "@admin9090" },
+Recruiter: { user: "@Re", pass: "@Re9090" },
+Candidate: { user: "@Ca", pass: "@Ca9090" }
 };
 
 let selectedRole = "";
 
-/* ROLE */
 document.querySelectorAll(".roleBtn").forEach(btn=>{
-    btn.onclick=()=>{
-        selectedRole = btn.dataset.role;
-        roleSelection.style.display="none";
-        loginPage.style.display="block";
-        roleTitle.innerText=selectedRole;
-    }
+btn.onclick=()=>{
+    selectedRole = btn.dataset.role;
+    roleSelection.style.display="none";
+    loginPage.style.display="block";
+    roleTitle.innerText=selectedRole;
+};
 });
 
-/* LOGIN */
 function validateLogin(){
-    let u = username.value.trim();
-    let p = password.value.trim();
-
-    if(u===credentials[selectedRole].user && p===credentials[selectedRole].pass){
-        showGreeting();
-    } else alert("Invalid login");
+if(username.value===credentials[selectedRole].user &&
+   password.value===credentials[selectedRole].pass){
+    showGreeting();
+}else alert("Invalid login");
 }
 
-/* GREETING */
 function showGreeting(){
-    loginPage.style.display="none";
-    greetingMessage.innerText=greetings[selectedRole];
-    greetingMessage.classList.add("show");
+loginPage.style.display="none";
+greetingMessage.innerText="Welcome!";
+greetingMessage.classList.add("show");
 
-    setTimeout(()=>{
-        greetingMessage.style.display="none";
-
-        if(selectedRole==="Administrator"){
-            sidebar.style.display="block";
-            adminDashboard.style.display="flex";
-            drawScatterChart();
-        } else {
-            roleSelection.style.display="block";
-        }
-
-    },2000);
+setTimeout(()=>{
+    greetingMessage.style.display="none";
+    sidebar.style.display="block";
+    adminDashboard.style.display="flex";
+    drawChart();
+},2000);
 }
 
-/* NAVIGATION */
 function showSection(section){
-    document.querySelectorAll("#adminDashboard > div > div").forEach(sec=>{
-        sec.style.display="none";
-    });
-    document.getElementById(section+"Section").style.display="block";
+document.querySelectorAll("#adminDashboard > div > div").forEach(sec=>{
+    sec.style.display="none";
+});
+document.getElementById(section+"Section").style.display="block";
 }
 
-/* BACK */
 function goBack(){
-    adminDashboard.style.display="none";
-    sidebar.style.display="none";
-    roleSelection.style.display="block";
+adminDashboard.style.display="none";
+sidebar.style.display="none";
+roleSelection.style.display="block";
 }
 
-/* DRAW SCATTER WITH LINES */
-function drawScatterChart(){
-    const chart = document.getElementById("scatterChart");
-    chart.innerHTML = "";
+/* SCATTER WITH LINE */
+function drawChart(){
+const chart = document.getElementById("scatterChart");
+chart.innerHTML="";
 
-    const points = [
-        {x:20, y:150},
-        {x:80, y:100},
-        {x:140, y:130},
-        {x:200, y:70},
-        {x:260, y:110}
-    ];
+const pts=[{x:10,y:150},{x:60,y:100},{x:120,y:130},{x:180,y:80},{x:240,y:110}];
 
-    // Draw dots
-    points.forEach(p=>{
-        let dot = document.createElement("div");
-        dot.className = "dot";
-        dot.style.left = p.x + "px";
-        dot.style.top = p.y + "px";
-        chart.appendChild(dot);
-    });
+pts.forEach(p=>{
+    let d=document.createElement("div");
+    d.className="dot";
+    d.style.left=p.x+"px";
+    d.style.top=p.y+"px";
+    chart.appendChild(d);
+});
 
-    // Draw connecting lines
-    for(let i=0; i<points.length-1; i++){
-        let x1 = points[i].x;
-        let y1 = points[i].y;
-        let x2 = points[i+1].x;
-        let y2 = points[i+1].y;
+for(let i=0;i<pts.length-1;i++){
+    let x1=pts[i].x,y1=pts[i].y;
+    let x2=pts[i+1].x,y2=pts[i+1].y;
 
-        let length = Math.sqrt((x2-x1)**2 + (y2-y1)**2);
-        let angle = Math.atan2((y2-y1),(x2-x1)) * 180/Math.PI;
+    let len=Math.hypot(x2-x1,y2-y1);
+    let ang=Math.atan2(y2-y1,x2-x1)*180/Math.PI;
 
-        let line = document.createElement("div");
-        line.className = "line";
-        line.style.width = length + "px";
-        line.style.left = x1 + "px";
-        line.style.top = y1 + "px";
-        line.style.transform = `rotate(${angle}deg)`;
-        chart.appendChild(line);
-    }
+    let l=document.createElement("div");
+    l.className="line";
+    l.style.width=len+"px";
+    l.style.left=x1+"px";
+    l.style.top=y1+"px";
+    l.style.transform=`rotate(${ang}deg)`;
+    chart.appendChild(l);
+}
 }
 </script>
 
