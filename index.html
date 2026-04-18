@@ -52,7 +52,7 @@ button {
     cursor: pointer;
 }
 
-/* BIG GREETING */
+/* GREETING */
 #greetingMessage {
     position: fixed;
     top: 50%;
@@ -100,13 +100,12 @@ button {
     background: #28a745;
 }
 
-/* DASHBOARD CONTAINER */
+/* DASHBOARD */
 #adminDashboard {
     display: none;
     width: 100%;
 }
 
-/* CENTERED CONTENT AREA */
 .content {
     margin-left: 230px;
     width: calc(100% - 230px);
@@ -114,7 +113,6 @@ button {
     justify-content: center;
 }
 
-/* INNER CONTENT BOX */
 .contentInner {
     max-width: 900px;
     width: 100%;
@@ -137,11 +135,10 @@ button {
     font-weight: bold;
 }
 
-/* CHART */
+/* BAR */
 .chartBar {
     display: flex;
     gap: 10px;
-    margin-top: 20px;
     justify-content: center;
 }
 .bar {
@@ -149,24 +146,35 @@ button {
     background: green;
 }
 
-/* PIE */
+/* SMALL PIE */
 .pie {
-    width: 120px;
-    height: 120px;
+    width: 90px;
+    height: 90px;
     border-radius: 50%;
     background: conic-gradient(green 70%, lightgray 30%);
     margin: 20px auto;
 }
 
-/* TABLE */
-table {
-    width: 100%;
-    margin-top: 20px;
-    border-collapse: collapse;
-}
-td, th {
+/* SCATTER */
+#scatterChart {
+    width: 300px;
+    height: 200px;
+    margin: auto;
     border: 1px solid #ccc;
-    padding: 8px;
+    position: relative;
+}
+.dot {
+    width: 8px;
+    height: 8px;
+    background: red;
+    border-radius: 50%;
+    position: absolute;
+}
+.line {
+    position: absolute;
+    height: 2px;
+    background: blue;
+    transform-origin: left center;
 }
 </style>
 </head>
@@ -205,278 +213,144 @@ td, th {
 
 <!-- DASHBOARD -->
 <div id="adminDashboard" class="content">
-
 <div class="contentInner">
 
 <!-- OVERVIEW -->
 <div id="overviewSection">
-    <h2 style="text-align:center;">Admin Dashboard</h2>
+<h2 style="text-align:center;">Admin Dashboard</h2>
 
-    <div class="cardContainer">
-        <div class="card">Candidates: 120</div>
-        <div class="card">Recruiters: 12</div>
-        <div class="card">Departments: 5</div>
-        <div class="card">Hiring: 8</div>
-        <div class="card">Pending: 14</div>
-    </div>
+<div class="cardContainer">
+    <div class="card">Candidates: 120</div>
+    <div class="card">Recruiters: 12</div>
+    <div class="card">Departments: 5</div>
+    <div class="card">Hiring: 8</div>
+    <div class="card">Pending: 14</div>
+</div>
 
-    <h3 style="text-align:center;">Analytics</h3>
+<h3 style="text-align:center;">Analytics</h3>
 
-    <div class="chartBar">
-        <div class="bar" style="height:100px;"></div>
-        <div class="bar" style="height:60px;"></div>
-        <div class="bar" style="height:80px;"></div>
-    </div>
+<div class="chartBar">
+    <div class="bar" style="height:100px;"></div>
+    <div class="bar" style="height:60px;"></div>
+    <div class="bar" style="height:80px;"></div>
+</div>
 
-    <div class="pie"></div>
+<div class="pie"></div>
 
-    <h3 style="text-align:center;">Recruitment Trend (Scatter + Line)</h3>
-    <canvas id="overviewScatter" width="400" height="200"></canvas>
+<h4 style="text-align:center;">Performance Trend</h4>
+<div id="scatterChart"></div>
 </div>
 
 <!-- USERS -->
 <div id="usersSection" style="display:none;">
-    <h2>User Management</h2>
-
-    <table>
-        <tr><th>Name</th><th>Action</th></tr>
-        <tr>
-            <td>John</td>
-            <td>
-                <button>Remove</button>
-                <button>Reset Password</button>
-            </td>
-        </tr>
-    </table>
-
-    <button>Add Recruiter</button>
-
-    <h3>Manage Candidates</h3>
-    <table>
-        <tr><th>Name</th><th>Status</th><th>Action</th></tr>
-        <tr>
-            <td>Alice</td>
-            <td>Active</td>
-            <td>
-                <button>Suspend</button>
-                <button>Approve</button>
-            </td>
-        </tr>
-    </table>
-
-    <h3>User Activity Chart</h3>
-    <canvas id="userBarChart" width="400" height="200"></canvas>
+<h2>User Management</h2>
 </div>
 
 <!-- JOBS -->
 <div id="jobsSection" style="display:none;">
-    <h2>Job Posting</h2>
-
-    <button>Create Job</button>
-    <button>Edit Job</button>
-    <button>Close Job</button>
-
-    <h3>Job Status Distribution</h3>
-    <canvas id="jobsPieChart" width="300" height="300"></canvas>
+<h2>Job Posting</h2>
 </div>
 
 <!-- INTERVIEWS -->
 <div id="interviewsSection" style="display:none;">
-    <h2>Interview Management</h2>
-    <p>Schedule interviews</p>
-    <button>Send Email</button>
-
-    <h3>Interview Timeline</h3>
-    <canvas id="interviewLineChart" width="400" height="200"></canvas>
+<h2>Interview Management</h2>
 </div>
 
 <!-- MESSAGES -->
 <div id="messagesSection" style="display:none;">
-    <h2>Messaging</h2>
-    <button>Send Message</button>
-
-    <h3>Message Type Breakdown</h3>
-    <canvas id="messageDonutChart" width="300" height="300"></canvas>
+<h2>Messaging</h2>
 </div>
 
 <!-- PERFORMANCE -->
 <div id="performanceSection" style="display:none;">
-    <h2>Performance</h2>
-    <p>Conversion Rate: 60%</p>
-
-    <h3>Team Performance Radar</h3>
-    <canvas id="performanceRadar" width="400" height="200"></canvas>
+<h2>Performance</h2>
 </div>
 
 </div>
 </div>
-
-<!-- CHART.JS -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-
-/* LOGIN SYSTEM DATA */
 const credentials = {
-    Administrator: { user: "@admin", pass: "@admin9090" },
-    Recruiter: { user: "@Re", pass: "@Re9090" },
-    Candidate: { user: "@Ca", pass: "@Ca9090" }
-};
-
-const greetings = {
-    Administrator: "Welcome Admin! 🌟",
-    Recruiter: "Welcome Recruiter! 🤝",
-    Candidate: "Welcome Candidate! 🎯"
+Administrator: { user: "@admin", pass: "@admin9090" },
+Recruiter: { user: "@Re", pass: "@Re9090" },
+Candidate: { user: "@Ca", pass: "@Ca9090" }
 };
 
 let selectedRole = "";
 
-/* ROLE SELECTION */
 document.querySelectorAll(".roleBtn").forEach(btn=>{
-    btn.onclick=()=>{
-        selectedRole = btn.dataset.role;
-        roleSelection.style.display="none";
-        loginPage.style.display="block";
-        roleTitle.innerText=selectedRole;
-    }
+btn.onclick=()=>{
+    selectedRole = btn.dataset.role;
+    roleSelection.style.display="none";
+    loginPage.style.display="block";
+    roleTitle.innerText=selectedRole;
+};
 });
 
-/* LOGIN VALIDATION */
 function validateLogin(){
-    let u = username.value.trim();
-    let p = password.value.trim();
-
-    if(u===credentials[selectedRole].user && p===credentials[selectedRole].pass){
-        showGreeting();
-    } else alert("Invalid login");
+if(username.value===credentials[selectedRole].user &&
+   password.value===credentials[selectedRole].pass){
+    showGreeting();
+}else alert("Invalid login");
 }
 
-/* GREETING ANIMATION */
 function showGreeting(){
-    loginPage.style.display="none";
-    greetingMessage.innerText=greetings[selectedRole];
-    greetingMessage.classList.add("show");
+loginPage.style.display="none";
+greetingMessage.innerText="Welcome!";
+greetingMessage.classList.add("show");
 
-    setTimeout(()=>{
-        greetingMessage.style.display="none";
-
-        if(selectedRole==="Administrator"){
-            sidebar.style.display="block";
-            adminDashboard.style.display="flex";
-        } else {
-            roleSelection.style.display="block";
-        }
-
-    },2000);
+setTimeout(()=>{
+    greetingMessage.style.display="none";
+    sidebar.style.display="block";
+    adminDashboard.style.display="flex";
+    drawChart();
+},2000);
 }
 
-/* PAGE NAVIGATION */
 function showSection(section){
-    document.querySelectorAll("#adminDashboard > div > div").forEach(sec=>{
-        sec.style.display="none";
-    });
-    document.getElementById(section+"Section").style.display="block";
+document.querySelectorAll("#adminDashboard > div > div").forEach(sec=>{
+    sec.style.display="none";
+});
+document.getElementById(section+"Section").style.display="block";
 }
 
-/* BACK */
 function goBack(){
-    adminDashboard.style.display="none";
-    sidebar.style.display="none";
-    roleSelection.style.display="block";
+adminDashboard.style.display="none";
+sidebar.style.display="none";
+roleSelection.style.display="block";
 }
 
+/* SCATTER WITH LINE */
+function drawChart(){
+const chart = document.getElementById("scatterChart");
+chart.innerHTML="";
 
+const pts=[{x:10,y:150},{x:60,y:100},{x:120,y:130},{x:180,y:80},{x:240,y:110}];
 
-
-
-
-/* ============================
-   📊 CHARTS START HERE
-   ============================ */
-
-/* Overview Scatter + Line */
-new Chart(document.getElementById("overviewScatter"), {
-    type: "line",
-    data: {
-        labels: ["Jan","Feb","Mar","Apr","May","Jun"],
-        datasets: [{
-            label: "Applicants Trend",
-            data: [12,19,7,14,20,16],
-            borderColor: "green",
-            backgroundColor: "darkgreen",
-            pointRadius: 6,
-            tension: 0.4
-        }]
-    }
+pts.forEach(p=>{
+    let d=document.createElement("div");
+    d.className="dot";
+    d.style.left=p.x+"px";
+    d.style.top=p.y+"px";
+    chart.appendChild(d);
 });
 
-/* User Management Bar Chart */
-new Chart(document.getElementById("userBarChart"), {
-    type: "bar",
-    data: {
-        labels: ["Admins","Recruiters","Candidates"],
-        datasets: [{
-            label: "User Count",
-            data: [5,12,120],
-            backgroundColor: ["#2ecc71","#27ae60","#1e8449"]
-        }]
-    }
-});
+for(let i=0;i<pts.length-1;i++){
+    let x1=pts[i].x,y1=pts[i].y;
+    let x2=pts[i+1].x,y2=pts[i+1].y;
 
-/* Job Posting Pie Chart */
-new Chart(document.getElementById("jobsPieChart"), {
-    type: "pie",
-    data: {
-        labels: ["Open","Closed","Draft"],
-        datasets: [{
-            data: [10,4,2],
-            backgroundColor: ["#1abc9c","#16a085","#0e6655"]
-        }]
-    }
-});
+    let len=Math.hypot(x2-x1,y2-y1);
+    let ang=Math.atan2(y2-y1,x2-x1)*180/Math.PI;
 
-/* Interview Line Chart */
-new Chart(document.getElementById("interviewLineChart"), {
-    type: "line",
-    data: {
-        labels: ["Mon","Tue","Wed","Thu","Fri"],
-        datasets: [{
-            label: "Interviews Scheduled",
-            data: [3,5,2,6,4],
-            borderColor: "#8e44ad",
-            pointBackgroundColor: "#5b2c6f",
-            pointRadius: 6,
-            tension: 0.3
-        }]
-    }
-});
-
-/* Messaging Donut Chart */
-new Chart(document.getElementById("messageDonutChart"), {
-    type: "doughnut",
-    data: {
-        labels: ["Emails","SMS","In-App"],
-        datasets: [{
-            data: [40,25,35],
-            backgroundColor: ["#f1c40f","#f39c12","#d68910"]
-        }]
-    }
-});
-
-/* Performance Radar Chart */
-new Chart(document.getElementById("performanceRadar"), {
-    type: "radar",
-    data: {
-        labels: ["Speed","Accuracy","Quality","Conversion","Teamwork"],
-        datasets: [{
-            label: "Performance Score",
-            data: [80,70,85,60,75],
-            borderColor: "green",
-            backgroundColor: "rgba(0,128,0,0.3)"
-        }]
-    }
-});
-
+    let l=document.createElement("div");
+    l.className="line";
+    l.style.width=len+"px";
+    l.style.left=x1+"px";
+    l.style.top=y1+"px";
+    l.style.transform=`rotate(${ang}deg)`;
+    chart.appendChild(l);
+}
+}
 </script>
 
 </body>
