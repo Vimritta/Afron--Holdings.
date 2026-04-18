@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Role Login System</title>
 
-<!-- ADDED: Chart.js Library -->
+<!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
@@ -55,7 +55,7 @@ button {
     cursor: pointer;
 }
 
-/* BIG GREETING */
+/* GREETING */
 #greetingMessage {
     position: fixed;
     top: 50%;
@@ -103,22 +103,19 @@ button {
     background: #28a745;
 }
 
-/* DASHBOARD CONTAINER */
+/* DASHBOARD */
 #adminDashboard {
     display: none;
     width: 100%;
 }
 
-/* CENTERED CONTENT AREA */
 .content {
     margin-left: 230px;
     width: calc(100% - 230px);
-
     display: flex;
     justify-content: center;
 }
 
-/* INNER CONTENT BOX (CENTERED) */
 .contentInner {
     max-width: 900px;
     width: 100%;
@@ -141,11 +138,10 @@ button {
     font-weight: bold;
 }
 
-/* CHART */
+/* BAR */
 .chartBar {
     display: flex;
     gap: 10px;
-    margin-top: 20px;
     justify-content: center;
 }
 .bar {
@@ -153,10 +149,10 @@ button {
     background: green;
 }
 
-/* PIE */
+/* PIE SMALL */
 .pie {
-    width: 120px;
-    height: 120px;
+    width: 90px;
+    height: 90px;
     border-radius: 50%;
     background: conic-gradient(green 70%, lightgray 30%);
     margin: 20px auto;
@@ -209,7 +205,6 @@ td, th {
 
 <!-- DASHBOARD -->
 <div id="adminDashboard" class="content">
-
 <div class="contentInner">
 
 <!-- OVERVIEW -->
@@ -226,82 +221,24 @@ td, th {
 
     <h3 style="text-align:center;">Analytics</h3>
 
+    <!-- BAR -->
     <div class="chartBar">
         <div class="bar" style="height:100px;"></div>
         <div class="bar" style="height:60px;"></div>
         <div class="bar" style="height:80px;"></div>
     </div>
 
+    <!-- SMALL PIE -->
     <div class="pie"></div>
 
-    <!-- ADDED: REAL CHARTJS CHARTS -->
-    <h3 style="margin-top:40px; text-align:center;">Recruitment Activity (Monthly)</h3>
-    <canvas id="barChart" height="150"></canvas>
-
-    <h3 style="margin-top:40px; text-align:center;">Candidate Status Distribution</h3>
-    <canvas id="pieChart" height="150"></canvas>
-
-    <h3 style="margin-top:40px; text-align:center;">Experience vs Performance (Scatter)</h3>
-    <canvas id="scatterChart" height="150"></canvas>
-
+    <!-- SCATTER + LINE -->
+    <h4 style="text-align:center;">Recruitment Trend</h4>
+    <canvas id="trendChart" height="150"></canvas>
 </div>
 
 <!-- USERS -->
 <div id="usersSection" style="display:none;">
     <h2>User Management</h2>
-
-    <table>
-        <tr><th>Name</th><th>Action</th></tr>
-        <tr>
-            <td>John</td>
-            <td>
-                <button>Remove</button>
-                <button>Reset Password</button>
-            </td>
-        </tr>
-    </table>
-
-    <button>Add Recruiter</button>
-
-    <h3>Manage Candidates</h3>
-    <table>
-        <tr><th>Name</th><th>Status</th><th>Action</th></tr>
-        <tr>
-            <td>Alice</td>
-            <td>Active</td>
-            <td>
-                <button>Suspend</button>
-                <button>Approve</button>
-            </td>
-        </tr>
-    </table>
-</div>
-
-<!-- JOBS -->
-<div id="jobsSection" style="display:none;">
-    <h2>Job Posting</h2>
-    <button>Create Job</button>
-    <button>Edit Job</button>
-    <button>Close Job</button>
-</div>
-
-<!-- INTERVIEWS -->
-<div id="interviewsSection" style="display:none;">
-    <h2>Interview Management</h2>
-    <p>Schedule interviews</p>
-    <button>Send Email</button>
-</div>
-
-<!-- MESSAGES -->
-<div id="messagesSection" style="display:none;">
-    <h2>Messaging</h2>
-    <button>Send Message</button>
-</div>
-
-<!-- PERFORMANCE -->
-<div id="performanceSection" style="display:none;">
-    <h2>Performance</h2>
-    <p>Conversion Rate: 60%</p>
 </div>
 
 </div>
@@ -314,15 +251,8 @@ const credentials = {
     Candidate: { user: "@Ca", pass: "@Ca9090" }
 };
 
-const greetings = {
-    Administrator: "Welcome Admin! 🌟",
-    Recruiter: "Welcome Recruiter! 🤝",
-    Candidate: "Welcome Candidate! 🎯"
-};
-
 let selectedRole = "";
 
-/* ROLE */
 document.querySelectorAll(".roleBtn").forEach(btn=>{
     btn.onclick=()=>{
         selectedRole = btn.dataset.role;
@@ -332,36 +262,16 @@ document.querySelectorAll(".roleBtn").forEach(btn=>{
     }
 });
 
-/* LOGIN */
 function validateLogin(){
-    let u = username.value.trim();
-    let p = password.value.trim();
-
-    if(u===credentials[selectedRole].user && p===credentials[selectedRole].pass){
-        showGreeting();
+    if(username.value===credentials[selectedRole].user &&
+       password.value===credentials[selectedRole].pass){
+        loginPage.style.display="none";
+        sidebar.style.display="block";
+        adminDashboard.style.display="flex";
+        loadChart();
     } else alert("Invalid login");
 }
 
-/* GREETING */
-function showGreeting(){
-    loginPage.style.display="none";
-    greetingMessage.innerText=greetings[selectedRole];
-    greetingMessage.classList.add("show");
-
-    setTimeout(()=>{
-        greetingMessage.style.display="none";
-
-        if(selectedRole==="Administrator"){
-            sidebar.style.display="block";
-            adminDashboard.style.display="flex";
-        } else {
-            roleSelection.style.display="block";
-        }
-
-    },2000);
-}
-
-/* NAVIGATION */
 function showSection(section){
     document.querySelectorAll("#adminDashboard > div > div").forEach(sec=>{
         sec.style.display="none";
@@ -369,67 +279,32 @@ function showSection(section){
     document.getElementById(section+"Section").style.display="block";
 }
 
-/* BACK */
 function goBack(){
     adminDashboard.style.display="none";
     sidebar.style.display="none";
     roleSelection.style.display="block";
 }
 
-/* ADDED: REAL CHARTS INITIALIZATION */
-document.addEventListener("DOMContentLoaded", () => {
-
-    /* BAR CHART */
-    new Chart(document.getElementById("barChart"), {
-        type: "bar",
+/* CHART */
+function loadChart(){
+    new Chart(document.getElementById("trendChart"), {
+        type: "line",
         data: {
-            labels: ["Jan", "Feb", "Mar", "Apr", "May"],
+            labels: ["Jan","Feb","Mar","Apr","May","Jun"],
             datasets: [{
-                label: "New Candidates",
-                data: [50, 70, 40, 90, 60],
-                backgroundColor: "green"
-            }]
-        }
-    });
-
-    /* PIE CHART */
-    new Chart(document.getElementById("pieChart"), {
-        type: "pie",
-        data: {
-            labels: ["Selected", "Pending", "Rejected"],
-            datasets: [{
-                data: [55, 25, 20],
-                backgroundColor: ["green", "#cccccc", "#999999"]
-            }]
-        }
-    });
-
-    /* SCATTER CHART */
-    new Chart(document.getElementById("scatterChart"), {
-        type: "scatter",
-        data: {
-            datasets: [{
-                label: "Experience vs Performance",
-                data: [
-                    { x: 1, y: 60 },
-                    { x: 2, y: 65 },
-                    { x: 3, y: 70 },
-                    { x: 4, y: 75 },
-                    { x: 5, y: 90 },
-                    { x: 6, y: 95 }
-                ],
-                backgroundColor: "green"
+                label: "Applicants",
+                data: [12, 19, 7, 14, 20, 16],
+                borderColor: "green",
+                tension: 0.3,
+                pointRadius: 5
             }]
         },
         options: {
-            scales: {
-                x: { title: { display: true, text: "Years of Experience" }},
-                y: { title: { display: true, text: "Performance Score" }}
-            }
+            plugins: { legend: { display: false }},
+            scales: { y: { beginAtZero: true }}
         }
     });
-
-});
+}
 </script>
 
 </body>
