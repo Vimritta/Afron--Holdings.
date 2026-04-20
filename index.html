@@ -77,6 +77,28 @@ body{
     border-radius:10px;
     margin-top:20px;
 }
+
+.cardBox{
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.card{
+    background:white;
+    width:200px;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 2px 4px rgba(0,0,0,0.1);
+}
+
+.notification{
+    background:white;
+    padding:15px;
+    margin-top:15px;
+    border-left:5px solid #1b263b;
+    border-radius:8px;
+}
 </style>
 </head>
 
@@ -130,30 +152,76 @@ body{
         </div>
     </div>
 
-    <!-- RECRUITER SECTIONS -->
+    <!-- ======================== -->
+    <!-- RECRUITER PANEL SECTIONS -->
+    <!-- ======================== -->
+
     <div id="recruiterSections">
+
+        <!-- 1. Recruiter Dashboard -->
         <div id="recDashboard" class="section">
             <h1>Recruiter Dashboard</h1>
+
+            <div class="cardBox">
+                <div class="card">Total Assigned: <b>120</b></div>
+                <div class="card">Shortlisted: <b>45</b></div>
+                <div class="card">Rejected: <b>30</b></div>
+                <div class="card">Interviews Today: <b>12</b></div>
+                <div class="card">Pending Actions: <b>8</b></div>
+            </div>
+
             <div class="chart-container"><canvas id="recChart"></canvas></div>
+
+            <h2>Notifications</h2>
+            <div class="notification">📌 New candidate assigned to you</div>
+            <div class="notification">📅 Interview at 2:00 PM</div>
+            <div class="notification">📄 Document verification pending</div>
         </div>
 
-        <div id="recJobs" class="section">
-            <h1>Manage Jobs</h1>
-            <p>Create / Edit / Close Jobs</p>
-        </div>
-
+        <!-- 2. Candidate Management -->
         <div id="recCandidates" class="section">
-            <h1>Candidates</h1>
-            <p>View Applicants & Status</p>
+            <h1>Candidate Management</h1>
+
+            <h3>Filters</h3>
+            <button>Pending</button>
+            <button>Shortlisted</button>
+            <button>Rejected</button>
+
+            <h3>Candidate List</h3>
+            <p>Candidate profiles appear here.</p>
         </div>
 
+        <!-- 3. Job Management -->
+        <div id="recJobs" class="section">
+            <h1>Job Management</h1>
+            <p>View Openings / Assign Candidates / Track Job Stages</p>
+        </div>
+
+        <!-- 4. Interview Management -->
         <div id="recInterviews" class="section">
             <h1>Interview Schedule</h1>
+            <p>Calendar + meeting links + feedback submission</p>
         </div>
 
+        <!-- 5. Messaging -->
+        <div id="recMessaging" class="section">
+            <h1>Messaging</h1>
+            <textarea style="width:400px;height:100px;"></textarea><br>
+            <button>Send Message</button>
+        </div>
+
+        <!-- 6. Recruiter Performance -->
         <div id="recPerformance" class="section">
             <h1>Your Performance</h1>
+            <div class="chart-container"><canvas id="recPerfChart"></canvas></div>
         </div>
+
+        <!-- 7. Document Verification -->
+        <div id="recDocuments" class="section">
+            <h1>Document Verification</h1>
+            <p>Review CVs, Certificates, Police Reports</p>
+        </div>
+
     </div>
 
 </div>
@@ -191,9 +259,11 @@ function loadDashboard(role){
 
         menu.innerHTML = `
             <a onclick="showSection('recDashboard')">Dashboard</a>
-            <a onclick="showSection('recJobs')">Jobs</a>
-            <a onclick="showSection('recCandidates')">Candidates</a>
+            <a onclick="showSection('recCandidates')">Candidate Mgmt</a>
+            <a onclick="showSection('recJobs')">Job Mgmt</a>
             <a onclick="showSection('recInterviews')">Interviews</a>
+            <a onclick="showSection('recMessaging')">Messaging</a>
+            <a onclick="showSection('recDocuments')">Documents</a>
             <a onclick="showSection('recPerformance')">Performance</a>
             <a onclick="goBack()">⬅ Logout</a>
         `;
@@ -207,18 +277,14 @@ function loadDashboard(role){
 
 /* SECTION SWITCH */
 function showSection(id){
-    document.querySelectorAll(".section").forEach(sec=>{
-        sec.style.display="none";
-    });
+    document.querySelectorAll(".section").forEach(sec=>sec.style.display="none");
     document.getElementById(id).style.display="block";
 }
 
 /* BACK */
-function goBack(){
-    location.reload();
-}
+function goBack(){ location.reload(); }
 
-/* CHARTS (SAME AS YOUR STYLE) */
+/* CHARTS */
 new Chart(document.getElementById('scatterChart'), {
     type: 'scatter',
     data: { datasets: [{ data:[{x:1,y:40},{x:2,y:60},{x:3,y:80}]}] }
@@ -249,9 +315,15 @@ new Chart(document.getElementById('performanceDoughnutChart'), {
     data:{ labels:["Done","Pending"], datasets:[{data:[70,30]}] }
 });
 
+/* RECRUITER CHARTS */
 new Chart(document.getElementById('recChart'), {
     type:'bar',
-    data:{ labels:["Applied","Shortlisted"], datasets:[{data:[50,20]}] }
+    data:{ labels:["Assigned","Shortlisted","Rejected"], datasets:[{data:[120,45,30]}] }
+});
+
+new Chart(document.getElementById('recPerfChart'), {
+    type:'line',
+    data:{ labels:["Week 1","Week 2","Week 3"], datasets:[{data:[20,30,25]}] }
 });
 
 </script>
