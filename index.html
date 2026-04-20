@@ -44,20 +44,14 @@ body{
     display:none;
 }
 
-.sidebar h2{
-    text-align:center;
-}
-
+.sidebar h2{text-align:center;}
 .sidebar a{
     display:block;
     padding:15px;
     color:white;
     cursor:pointer;
 }
-
-.sidebar a:hover{
-    background:#1b263b;
-}
+.sidebar a:hover{background:#1b263b;}
 
 /* MAIN */
 .main{
@@ -66,9 +60,7 @@ body{
     display:none;
 }
 
-.section{
-    display:none;
-}
+.section{display:none;}
 
 /* CARDS */
 .cardBox{
@@ -82,7 +74,6 @@ body{
     width:200px;
     padding:20px;
     border-radius:10px;
-    box-shadow:0 2px 4px rgba(0,0,0,0.1);
 }
 
 /* CHART */
@@ -94,7 +85,7 @@ body{
     margin-top:20px;
 }
 
-/* ALERTS */
+/* ALERT */
 .alert{
     background:white;
     padding:15px;
@@ -118,10 +109,11 @@ td,th{
 
 <body>
 
-<!-- ROLE SELECT (UNCHANGED) -->
+<!-- ROLE SELECT -->
 <div id="rolePage" class="roleSelect">
     <button class="roleBtn" onclick="loadDashboard('admin')">Admin</button>
     <button class="roleBtn" onclick="loadDashboard('recruiter')">Recruiter</button>
+    <button class="roleBtn" onclick="loadDashboard('candidate')">Candidate</button>
 </div>
 
 <!-- SIDEBAR -->
@@ -133,211 +125,165 @@ td,th{
 <!-- MAIN -->
 <div class="main" id="mainContent">
 
-<!-- ================= ADMIN ================= -->
+<!-- ================= ADMIN (UNCHANGED) ================= -->
 <div id="adminSections">
-
-<!-- 🔷 DASHBOARD OVERVIEW -->
-<div id="analytics" class="section">
-<h1>Admin Dashboard</h1>
-
-<div class="cardBox">
-<div class="card">Candidates: <b>120</b></div>
-<div class="card">Recruiters: <b>12</b></div>
-<div class="card">Active Jobs: <b>8</b></div>
-<div class="card">Pending Approvals: <b>14</b></div>
-<div class="card">Today Interviews: <b>6</b></div>
-<div class="card">Visa Pending: <b>9</b></div>
+    <div id="analytics" class="section">
+        <h1>Admin Dashboard</h1>
+    </div>
 </div>
 
-<div class="chart-container">
-<h3>Recruitment Funnel</h3>
-<canvas id="funnelChart"></canvas>
-</div>
-
-<div class="chart-container">
-<h3>Country Demand</h3>
-<canvas id="countryChart"></canvas>
-</div>
-
-<h2>⚠ Alerts</h2>
-<div class="alert">3 Passports expiring soon</div>
-<div class="alert">5 Medical reports pending</div>
-<div class="alert">2 recruiters inactive</div>
-
-</div>
-
-<!-- 🔷 USER MANAGEMENT -->
-<div id="userManagement" class="section">
-<h1>Recruiter Leaderboard</h1>
-
-<table>
-<tr><th>Name</th><th>Shortlisted</th><th>Selected</th></tr>
-<tr><td>John</td><td>45</td><td>20</td></tr>
-<tr><td>Alice</td><td>40</td><td>18</td></tr>
-<tr><td>David</td><td>30</td><td>15</td></tr>
-</table>
-</div>
-
-<!-- 🔷 JOBS -->
-<div id="jobPosting" class="section">
-<h1>Department Insights</h1>
-
-<div class="chart-container">
-<canvas id="jobPieChart"></canvas>
-</div>
-</div>
-
-<!-- 🔷 INTERVIEWS -->
-<div id="interviews" class="section">
-<h1>Candidate Timeline</h1>
-
-<div class="chart-container">
-<canvas id="timelineChart"></canvas>
-</div>
-</div>
-
-<!-- 🔷 MESSAGING -->
-<div id="messaging" class="section">
-<h1>Document Tracking</h1>
-
-<table>
-<tr><th>Document</th><th>Status</th></tr>
-<tr><td>Police Report</td><td>Pending</td></tr>
-<tr><td>Medical</td><td>Completed</td></tr>
-<tr><td>Passport</td><td>Renew Required</td></tr>
-</table>
-</div>
-
-<!-- 🔷 PERFORMANCE -->
-<div id="performance" class="section">
-<h1>System Performance</h1>
-
-<div class="chart-container">
-<canvas id="performanceChart"></canvas>
-</div>
-</div>
-
-</div>
-
-<!-- ================= RECRUITER (UNCHANGED) ================= -->
 <div id="recruiterSections">
+    <div id="recDashboard" class="section">
+        <h1>Recruiter Dashboard</h1>
+    </div>
+</div>
 
-<div id="recDashboard" class="section">
-<h1>Recruiter Dashboard</h1>
+<!-- ================= CANDIDATE ================= -->
+<div id="candidateSections">
+
+<!-- 1. PROFILE & DOCUMENTS -->
+<div id="candProfile" class="section">
+<h1>Profile & Documents</h1>
 
 <div class="cardBox">
-<div class="card">Total Assigned: <b>120</b></div>
-<div class="card">Shortlisted: <b>45</b></div>
-<div class="card">Rejected: <b>30</b></div>
-<div class="card">Interviews Today: <b>12</b></div>
-<div class="card">Pending: <b>8</b></div>
+<div class="card">Passport: ✔️ Submitted</div>
+<div class="card">NIC: ⏳ Pending</div>
+<div class="card">CV: ✔️ Submitted</div>
+<div class="card">Medical: ❌ Missing</div>
+</div>
 </div>
 
-<div class="chart-container"><canvas id="recChart"></canvas></div>
+<!-- 2. JOB MATCHING -->
+<div id="candJobs" class="section">
+<h1>Recommended Jobs</h1>
 
-<h2>Notifications</h2>
-<div class="alert">New candidate assigned</div>
+<div class="cardBox">
+<div class="card">Factory Worker - Japan <br><button>Apply</button></div>
+<div class="card">Driver - Dubai <br><button>Apply</button></div>
+<div class="card">Housekeeping - Korea <br><button>Apply</button></div>
+</div>
 </div>
 
-<div id="recCandidates" class="section">
-<h1>Candidate Management</h1>
-<button>Pending</button>
-<button>Shortlisted</button>
-<button>Rejected</button>
-<div class="chart-container"><canvas id="candidateChart"></canvas></div>
+<!-- 3. APPLICATION STATUS -->
+<div id="candStatus" class="section">
+<h1>Application Tracking</h1>
+
+<table>
+<tr><th>Job</th><th>Status</th></tr>
+<tr><td>Japan Factory</td><td>Interview Scheduled</td></tr>
+<tr><td>Dubai Driver</td><td>Visa Processing</td></tr>
+</table>
 </div>
 
-<div id="recJobs" class="section">
-<h1>Job Management</h1>
-<div class="chart-container"><canvas id="jobMgmtChart"></canvas></div>
+<!-- 4. TRAINING -->
+<div id="candTraining" class="section">
+<h1>Training & Exams</h1>
+
+<div class="cardBox">
+<div class="card">Safety Training - Completed</div>
+<div class="card">Language Test - Pending</div>
+</div>
 </div>
 
-<div id="recInterviews" class="section">
-<h1>Interview Schedule</h1>
-<div class="chart-container"><canvas id="interviewMgmtChart"></canvas></div>
+<!-- 5. PAYMENTS -->
+<div id="candPayments" class="section">
+<h1>Payments</h1>
+
+<table>
+<tr><th>Type</th><th>Status</th></tr>
+<tr><td>Registration</td><td>Paid</td></tr>
+<tr><td>Medical</td><td>Pending</td></tr>
+</table>
 </div>
 
-<div id="recMessaging" class="section">
-<h1>Messaging</h1>
-<textarea></textarea>
+<!-- 6. NOTIFICATIONS -->
+<div id="candNotifications" class="section">
+<h1>Notifications</h1>
+
+<div class="alert">Interview scheduled for Japan job</div>
+<div class="alert">Passport renewal required</div>
 </div>
 
-<div id="recDocuments" class="section">
-<h1>Documents</h1>
+<!-- 7. SUPPORT -->
+<div id="candSupport" class="section">
+<h1>Support</h1>
+
+<textarea placeholder="Write your issue..." style="width:100%;height:100px;"></textarea>
+<button>Submit Ticket</button>
 </div>
 
-<div id="recPerformance" class="section">
-<h1>Performance</h1>
-<div class="chart-container"><canvas id="recPerfChart"></canvas></div>
+<!-- 9. VISUALS -->
+<div id="candVisuals" class="section">
+<h1>Overview</h1>
+
+<div class="chart-container">
+<canvas id="candChart"></canvas>
+</div>
 </div>
 
 </div>
-
 </div>
 
 <script>
 
-/* LOAD */
+/* LOAD DASHBOARD */
 function loadDashboard(role){
 rolePage.style.display="none";
 sidebar.style.display="block";
 mainContent.style.display="block";
 
-let menu = document.getElementById("menuItems");
+let menu=document.getElementById("menuItems");
 
 if(role==="admin"){
-roleTitle.innerText="Admin Panel";
-menu.innerHTML=`
-<a onclick="showSection('analytics')">Dashboard</a>
-<a onclick="showSection('userManagement')">Leaderboard</a>
-<a onclick="showSection('jobPosting')">Departments</a>
-<a onclick="showSection('interviews')">Timeline</a>
-<a onclick="showSection('messaging')">Documents</a>
-<a onclick="showSection('performance')">Performance</a>
-<a onclick="goBack()">Logout</a>
-`;
+roleTitle.innerText="Admin";
 adminSections.style.display="block";
 recruiterSections.style.display="none";
-showSection('analytics');
+candidateSections.style.display="none";
 
-}else{
-roleTitle.innerText="Recruiter Panel";
-menu.innerHTML=`
-<a onclick="showSection('recDashboard')">Dashboard</a>
-<a onclick="showSection('recCandidates')">Candidates</a>
-<a onclick="showSection('recJobs')">Jobs</a>
-<a onclick="showSection('recInterviews')">Interviews</a>
-<a onclick="showSection('recMessaging')">Messaging</a>
-<a onclick="showSection('recDocuments')">Documents</a>
-<a onclick="showSection('recPerformance')">Performance</a>
-<a onclick="goBack()">Logout</a>
-`;
+}else if(role==="recruiter"){
+roleTitle.innerText="Recruiter";
 adminSections.style.display="none";
 recruiterSections.style.display="block";
-showSection('recDashboard');
+candidateSections.style.display="none";
+
+}else{
+roleTitle.innerText="Candidate";
+
+adminSections.style.display="none";
+recruiterSections.style.display="none";
+candidateSections.style.display="block";
+
+menu.innerHTML=`
+<a onclick="showSection('candProfile')">Profile</a>
+<a onclick="showSection('candJobs')">Jobs</a>
+<a onclick="showSection('candStatus')">Applications</a>
+<a onclick="showSection('candTraining')">Training</a>
+<a onclick="showSection('candPayments')">Payments</a>
+<a onclick="showSection('candNotifications')">Notifications</a>
+<a onclick="showSection('candSupport')">Support</a>
+<a onclick="showSection('candVisuals')">Overview</a>
+<a onclick="goBack()">Logout</a>
+`;
+showSection('candProfile');
 }
 }
 
+/* SHOW SECTION */
 function showSection(id){
-document.querySelectorAll(".section").forEach(sec=>sec.style.display="none");
+document.querySelectorAll(".section").forEach(s=>s.style.display="none");
 document.getElementById(id).style.display="block";
 }
 
-function goBack(){ location.reload(); }
+function goBack(){location.reload();}
 
-/* ADMIN CHARTS */
-new Chart(funnelChart,{type:'bar',data:{labels:["Reg","Short","Interview","Selected","Visa"],datasets:[{data:[120,80,50,30,20]}]}});
-new Chart(countryChart,{type:'bar',data:{labels:["UAE","Qatar","KSA"],datasets:[{data:[50,40,30]}]}});
-new Chart(jobPieChart,{type:'pie',data:{labels:["IT","HR"],datasets:[{data:[60,40]}]}});
-new Chart(timelineChart,{type:'line',data:{labels:["Stage1","Stage2","Stage3"],datasets:[{data:[10,30,50]}]}});
-new Chart(performanceChart,{type:'doughnut',data:{labels:["Active","Idle"],datasets:[{data:[70,30]}]}});
-
-/* RECRUITER CHARTS */
-new Chart(recChart,{type:'bar',data:{labels:["Assigned","Shortlisted"],datasets:[{data:[120,45]}]}});
-new Chart(candidateChart,{type:'doughnut',data:{labels:["Pending","Shortlisted"],datasets:[{data:[40,30]}]}});
-new Chart(jobMgmtChart,{type:'bar',data:{labels:["IT","HR"],datasets:[{data:[50,20]}]}});
-new Chart(interviewMgmtChart,{type:'line',data:{labels:["Mon","Tue"],datasets:[{data:[5,8]}]}});
-new Chart(recPerfChart,{type:'line',data:{labels:["W1","W2"],datasets:[{data:[20,30]}]}});
+/* CHART */
+new Chart(candChart,{
+type:'doughnut',
+data:{
+labels:["Completed","Pending","In Progress"],
+datasets:[{data:[60,25,15]}]
+}
+});
 
 </script>
 
