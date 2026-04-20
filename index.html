@@ -70,14 +70,7 @@ body{
     display:none;
 }
 
-.chart-container{
-    width:600px;
-    background:white;
-    padding:20px;
-    border-radius:10px;
-    margin-top:20px;
-}
-
+/* CARDS */
 .cardBox{
     display:flex;
     gap:20px;
@@ -92,19 +85,40 @@ body{
     box-shadow:0 2px 4px rgba(0,0,0,0.1);
 }
 
-.notification{
+/* CHART */
+.chart-container{
+    width:600px;
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    margin-top:20px;
+}
+
+/* ALERTS */
+.alert{
     background:white;
     padding:15px;
-    margin-top:15px;
-    border-left:5px solid #1b263b;
+    margin-top:10px;
+    border-left:5px solid red;
     border-radius:8px;
+}
+
+/* TABLE */
+table{
+    width:100%;
+    margin-top:20px;
+    border-collapse:collapse;
+}
+td,th{
+    padding:10px;
+    border:1px solid #ccc;
 }
 </style>
 </head>
 
 <body>
 
-<!-- ROLE SELECT -->
+<!-- ROLE SELECT (UNCHANGED) -->
 <div id="rolePage" class="roleSelect">
     <button class="roleBtn" onclick="loadDashboard('admin')">Admin</button>
     <button class="roleBtn" onclick="loadDashboard('recruiter')">Recruiter</button>
@@ -119,45 +133,95 @@ body{
 <!-- MAIN -->
 <div class="main" id="mainContent">
 
-<!-- ADMIN -->
+<!-- ================= ADMIN ================= -->
 <div id="adminSections">
 
+<!-- 🔷 DASHBOARD OVERVIEW -->
 <div id="analytics" class="section">
-<h1>Admin Analytics</h1>
-<div class="chart-container"><canvas id="scatterChart"></canvas></div>
+<h1>Admin Dashboard</h1>
+
+<div class="cardBox">
+<div class="card">Candidates: <b>120</b></div>
+<div class="card">Recruiters: <b>12</b></div>
+<div class="card">Active Jobs: <b>8</b></div>
+<div class="card">Pending Approvals: <b>14</b></div>
+<div class="card">Today Interviews: <b>6</b></div>
+<div class="card">Visa Pending: <b>9</b></div>
 </div>
 
+<div class="chart-container">
+<h3>Recruitment Funnel</h3>
+<canvas id="funnelChart"></canvas>
+</div>
+
+<div class="chart-container">
+<h3>Country Demand</h3>
+<canvas id="countryChart"></canvas>
+</div>
+
+<h2>⚠ Alerts</h2>
+<div class="alert">3 Passports expiring soon</div>
+<div class="alert">5 Medical reports pending</div>
+<div class="alert">2 recruiters inactive</div>
+
+</div>
+
+<!-- 🔷 USER MANAGEMENT -->
 <div id="userManagement" class="section">
-<h1>User Management</h1>
-<div class="chart-container"><canvas id="userBarChart"></canvas></div>
+<h1>Recruiter Leaderboard</h1>
+
+<table>
+<tr><th>Name</th><th>Shortlisted</th><th>Selected</th></tr>
+<tr><td>John</td><td>45</td><td>20</td></tr>
+<tr><td>Alice</td><td>40</td><td>18</td></tr>
+<tr><td>David</td><td>30</td><td>15</td></tr>
+</table>
 </div>
 
+<!-- 🔷 JOBS -->
 <div id="jobPosting" class="section">
-<h1>Job Posting</h1>
-<div class="chart-container"><canvas id="jobPieChart"></canvas></div>
+<h1>Department Insights</h1>
+
+<div class="chart-container">
+<canvas id="jobPieChart"></canvas>
+</div>
 </div>
 
+<!-- 🔷 INTERVIEWS -->
 <div id="interviews" class="section">
-<h1>Interviews</h1>
-<div class="chart-container"><canvas id="interviewLineChart"></canvas></div>
+<h1>Candidate Timeline</h1>
+
+<div class="chart-container">
+<canvas id="timelineChart"></canvas>
+</div>
 </div>
 
+<!-- 🔷 MESSAGING -->
 <div id="messaging" class="section">
-<h1>Messaging</h1>
-<div class="chart-container"><canvas id="messageRadarChart"></canvas></div>
+<h1>Document Tracking</h1>
+
+<table>
+<tr><th>Document</th><th>Status</th></tr>
+<tr><td>Police Report</td><td>Pending</td></tr>
+<tr><td>Medical</td><td>Completed</td></tr>
+<tr><td>Passport</td><td>Renew Required</td></tr>
+</table>
 </div>
 
+<!-- 🔷 PERFORMANCE -->
 <div id="performance" class="section">
-<h1>Performance</h1>
-<div class="chart-container"><canvas id="performanceDoughnutChart"></canvas></div>
+<h1>System Performance</h1>
+
+<div class="chart-container">
+<canvas id="performanceChart"></canvas>
+</div>
 </div>
 
 </div>
 
-<!-- RECRUITER -->
+<!-- ================= RECRUITER (UNCHANGED) ================= -->
 <div id="recruiterSections">
 
-<!-- Dashboard -->
 <div id="recDashboard" class="section">
 <h1>Recruiter Dashboard</h1>
 
@@ -172,58 +236,36 @@ body{
 <div class="chart-container"><canvas id="recChart"></canvas></div>
 
 <h2>Notifications</h2>
-<div class="notification">New candidate assigned</div>
-<div class="notification">Interview at 2 PM</div>
+<div class="alert">New candidate assigned</div>
 </div>
 
-<!-- Candidate -->
 <div id="recCandidates" class="section">
 <h1>Candidate Management</h1>
-
 <button>Pending</button>
 <button>Shortlisted</button>
 <button>Rejected</button>
-
-<div class="chart-container">
-<h3>Status Distribution</h3>
-<canvas id="candidateChart"></canvas>
-</div>
+<div class="chart-container"><canvas id="candidateChart"></canvas></div>
 </div>
 
-<!-- Jobs -->
 <div id="recJobs" class="section">
 <h1>Job Management</h1>
-
-<div class="chart-container">
-<h3>Applications per Job</h3>
-<canvas id="jobMgmtChart"></canvas>
-</div>
+<div class="chart-container"><canvas id="jobMgmtChart"></canvas></div>
 </div>
 
-<!-- Interviews -->
 <div id="recInterviews" class="section">
 <h1>Interview Schedule</h1>
-
-<div class="chart-container">
-<h3>Weekly Interviews</h3>
-<canvas id="interviewMgmtChart"></canvas>
-</div>
+<div class="chart-container"><canvas id="interviewMgmtChart"></canvas></div>
 </div>
 
-<!-- Messaging -->
 <div id="recMessaging" class="section">
 <h1>Messaging</h1>
-<textarea style="width:400px;height:100px;"></textarea><br>
-<button>Send</button>
+<textarea></textarea>
 </div>
 
-<!-- Documents -->
 <div id="recDocuments" class="section">
 <h1>Documents</h1>
-<p>Verify CVs & Certificates</p>
 </div>
 
-<!-- Performance -->
 <div id="recPerformance" class="section">
 <h1>Performance</h1>
 <div class="chart-container"><canvas id="recPerfChart"></canvas></div>
@@ -235,34 +277,31 @@ body{
 
 <script>
 
-/* LOAD DASHBOARD */
+/* LOAD */
 function loadDashboard(role){
-document.getElementById("rolePage").style.display="none";
-document.getElementById("sidebar").style.display="block";
-document.getElementById("mainContent").style.display="block";
+rolePage.style.display="none";
+sidebar.style.display="block";
+mainContent.style.display="block";
 
 let menu = document.getElementById("menuItems");
 
 if(role==="admin"){
 roleTitle.innerText="Admin Panel";
-
 menu.innerHTML=`
-<a onclick="showSection('analytics')">Analytics</a>
-<a onclick="showSection('userManagement')">Users</a>
-<a onclick="showSection('jobPosting')">Jobs</a>
-<a onclick="showSection('interviews')">Interviews</a>
-<a onclick="showSection('messaging')">Messaging</a>
+<a onclick="showSection('analytics')">Dashboard</a>
+<a onclick="showSection('userManagement')">Leaderboard</a>
+<a onclick="showSection('jobPosting')">Departments</a>
+<a onclick="showSection('interviews')">Timeline</a>
+<a onclick="showSection('messaging')">Documents</a>
 <a onclick="showSection('performance')">Performance</a>
 <a onclick="goBack()">Logout</a>
 `;
-
 adminSections.style.display="block";
 recruiterSections.style.display="none";
 showSection('analytics');
 
 }else{
 roleTitle.innerText="Recruiter Panel";
-
 menu.innerHTML=`
 <a onclick="showSection('recDashboard')">Dashboard</a>
 <a onclick="showSection('recCandidates')">Candidates</a>
@@ -273,36 +312,32 @@ menu.innerHTML=`
 <a onclick="showSection('recPerformance')">Performance</a>
 <a onclick="goBack()">Logout</a>
 `;
-
 adminSections.style.display="none";
 recruiterSections.style.display="block";
 showSection('recDashboard');
 }
 }
 
-/* SWITCH */
 function showSection(id){
 document.querySelectorAll(".section").forEach(sec=>sec.style.display="none");
 document.getElementById(id).style.display="block";
 }
 
-/* BACK */
 function goBack(){ location.reload(); }
 
 /* ADMIN CHARTS */
-new Chart(scatterChart,{type:'scatter',data:{datasets:[{data:[{x:1,y:40},{x:2,y:60}]}]}});
-new Chart(userBarChart,{type:'bar',data:{labels:["Jan","Feb"],datasets:[{data:[100,200]}]}});
+new Chart(funnelChart,{type:'bar',data:{labels:["Reg","Short","Interview","Selected","Visa"],datasets:[{data:[120,80,50,30,20]}]}});
+new Chart(countryChart,{type:'bar',data:{labels:["UAE","Qatar","KSA"],datasets:[{data:[50,40,30]}]}});
 new Chart(jobPieChart,{type:'pie',data:{labels:["IT","HR"],datasets:[{data:[60,40]}]}});
-new Chart(interviewLineChart,{type:'line',data:{labels:["Mon","Tue"],datasets:[{data:[5,10]}]}});
-new Chart(messageRadarChart,{type:'radar',data:{labels:["A","B"],datasets:[{data:[10,20]}]}});
-new Chart(performanceDoughnutChart,{type:'doughnut',data:{labels:["Done","Pending"],datasets:[{data:[70,30]}]}});
+new Chart(timelineChart,{type:'line',data:{labels:["Stage1","Stage2","Stage3"],datasets:[{data:[10,30,50]}]}});
+new Chart(performanceChart,{type:'doughnut',data:{labels:["Active","Idle"],datasets:[{data:[70,30]}]}});
 
 /* RECRUITER CHARTS */
-new Chart(recChart,{type:'bar',data:{labels:["Assigned","Shortlisted","Rejected"],datasets:[{data:[120,45,30]}]}});
-new Chart(candidateChart,{type:'doughnut',data:{labels:["Pending","Shortlisted","Rejected"],datasets:[{data:[40,30,20]}]}});
-new Chart(jobMgmtChart,{type:'bar',data:{labels:["IT","HR","Finance"],datasets:[{data:[50,20,30]}]}});
-new Chart(interviewMgmtChart,{type:'line',data:{labels:["Mon","Tue","Wed"],datasets:[{data:[5,8,6]}]}});
-new Chart(recPerfChart,{type:'line',data:{labels:["Week1","Week2"],datasets:[{data:[20,30]}]}});
+new Chart(recChart,{type:'bar',data:{labels:["Assigned","Shortlisted"],datasets:[{data:[120,45]}]}});
+new Chart(candidateChart,{type:'doughnut',data:{labels:["Pending","Shortlisted"],datasets:[{data:[40,30]}]}});
+new Chart(jobMgmtChart,{type:'bar',data:{labels:["IT","HR"],datasets:[{data:[50,20]}]}});
+new Chart(interviewMgmtChart,{type:'line',data:{labels:["Mon","Tue"],datasets:[{data:[5,8]}]}});
+new Chart(recPerfChart,{type:'line',data:{labels:["W1","W2"],datasets:[{data:[20,30]}]}});
 
 </script>
 
