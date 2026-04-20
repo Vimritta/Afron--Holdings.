@@ -78,6 +78,11 @@
     <a onclick="showSection('interviews')">Interviews</a>
     <a onclick="showSection('messaging')">Messaging</a>
     <a onclick="showSection('performance')">Performance</a>
+
+    <!-- NEW ADDED ITEMS -->
+    <a onclick="showSection('candidateReg')">Candidate Registration Forms</a>
+    <a onclick="showSection('recruiterPerf')">Recruiter Performance</a>
+    <a onclick="showSection('policeReport')">Police Certificate Reports</a>
 </div>
 
 <!-- Main -->
@@ -149,6 +154,45 @@
     </div>
 </div>
 
+<!-- -------------------------------------
+     NEW SECTION: CANDIDATE REGISTRATION
+-------------------------------------- -->
+<div id="candidateReg" class="section" style="display:none;">
+    <h1>Candidate Registration Forms</h1>
+    <p>Forms submitted by candidates for review.</p>
+
+    <div class="chart-container">
+        <h3>Candidate Form Status</h3>
+        <canvas id="candidateRegChart"></canvas>
+    </div>
+</div>
+
+<!-- -------------------------------------
+     NEW SECTION: RECRUITER PERFORMANCE
+-------------------------------------- -->
+<div id="recruiterPerf" class="section" style="display:none;">
+    <h1>Recruiter Performance</h1>
+    <p>Tracks individual recruiter achievements and tasks.</p>
+
+    <div class="chart-container">
+        <h3>Bar Chart – Recruiter Stats</h3>
+        <canvas id="recruiterPerfChart"></canvas>
+    </div>
+</div>
+
+<!-- -------------------------------------
+     NEW SECTION: POLICE REPORTS
+-------------------------------------- -->
+<div id="policeReport" class="section" style="display:none;">
+    <h1>Police Certificate Reports</h1>
+    <p>Verification status of candidate police clearance.</p>
+
+    <div class="chart-container">
+        <h3>Police Report Verification</h3>
+        <canvas id="policeReportChart"></canvas>
+    </div>
+</div>
+
 </div>
 
 <script>
@@ -159,23 +203,21 @@ function showSection(sectionID){
 }
 
 /* -------------------- ANALYTICS SCATTER CHART -------------------- */
-const scatterData = {
-    datasets: [{
-        label: "Candidate Score vs Experience",
-        data: [
-            {x:1, y:40}, {x:2, y:45}, {x:3, y:50}, {x:4, y:70},{x:5, y:90}
-        ],
-        backgroundColor: "blue",
-        borderColor: "blue",
-        showLine: true,
-        borderWidth: 2,
-        tension: 0.4
-    }]
-};
-
 new Chart(document.getElementById('scatterChart'), {
     type: 'scatter',
-    data: scatterData
+    data: {
+        datasets: [{
+            label: "Candidate Score vs Experience",
+            data: [
+                {x:1, y:40}, {x:2, y:45}, {x:3, y:50}, {x:4, y:70},{x:5, y:90}
+            ],
+            backgroundColor: "blue",
+            borderColor: "blue",
+            showLine: true,
+            borderWidth: 2,
+            tension: 0.4
+        }]
+    }
 });
 
 /* ---------------- USER MANAGEMENT – BAR CHART ---------------- */
@@ -232,6 +274,41 @@ new Chart(document.getElementById('performanceDoughnutChart'), {
         labels:["Active","Idle","Completed Tasks"],
         datasets:[{
             data:[60,20,30]
+        }]
+    }
+});
+
+/* -------- NEW CHART: Candidate Form Status -------- */
+new Chart(document.getElementById('candidateRegChart'), {
+    type:'bar',
+    data:{
+        labels:["Submitted","Pending","Approved","Rejected"],
+        datasets:[{
+            label:"Forms",
+            data:[50,20,30,10]
+        }]
+    }
+});
+
+/* -------- NEW CHART: Recruiter Performance -------- */
+new Chart(document.getElementById('recruiterPerfChart'), {
+    type:'bar',
+    data:{
+        labels:["John","Sarah","Ali","Niro"],
+        datasets:[{
+            label:"Candidates Processed",
+            data:[40,55,30,60]
+        }]
+    }
+});
+
+/* -------- NEW CHART: Police Reports -------- */
+new Chart(document.getElementById('policeReportChart'), {
+    type:'pie',
+    data:{
+        labels:["Verified","Pending","Rejected"],
+        datasets:[{
+            data:[70,20,10]
         }]
     }
 });
