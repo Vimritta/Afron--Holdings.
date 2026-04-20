@@ -14,7 +14,7 @@ body{
     background:#f4f4f4;
 }
 
-/* ROLE SELECTION */
+/* ROLE SELECT */
 .roleSelect{
     display:flex;
     justify-content:center;
@@ -125,49 +125,47 @@ td,th{
 <!-- MAIN -->
 <div class="main" id="mainContent">
 
-<!-- ================= ADMIN (UNCHANGED) ================= -->
+<!-- ADMIN (placeholder) -->
 <div id="adminSections">
-    <div id="analytics" class="section">
-        <h1>Admin Dashboard</h1>
-    </div>
+<div id="analytics" class="section">
+<h1>Admin Dashboard</h1>
+</div>
 </div>
 
+<!-- RECRUITER (placeholder) -->
 <div id="recruiterSections">
-    <div id="recDashboard" class="section">
-        <h1>Recruiter Dashboard</h1>
-    </div>
+<div id="recDashboard" class="section">
+<h1>Recruiter Dashboard</h1>
+</div>
 </div>
 
 <!-- ================= CANDIDATE ================= -->
 <div id="candidateSections">
 
-<!-- 1. PROFILE & DOCUMENTS -->
+<!-- PROFILE -->
 <div id="candProfile" class="section">
 <h1>Profile & Documents</h1>
-
 <div class="cardBox">
-<div class="card">Passport: ✔️ Submitted</div>
-<div class="card">NIC: ⏳ Pending</div>
-<div class="card">CV: ✔️ Submitted</div>
-<div class="card">Medical: ❌ Missing</div>
+<div class="card">Passport ✔️ Submitted</div>
+<div class="card">NIC ⏳ Pending</div>
+<div class="card">CV ✔️ Submitted</div>
+<div class="card">Medical ❌ Missing</div>
 </div>
 </div>
 
-<!-- 2. JOB MATCHING -->
+<!-- JOBS -->
 <div id="candJobs" class="section">
 <h1>Recommended Jobs</h1>
-
 <div class="cardBox">
-<div class="card">Factory Worker - Japan <br><button>Apply</button></div>
-<div class="card">Driver - Dubai <br><button>Apply</button></div>
-<div class="card">Housekeeping - Korea <br><button>Apply</button></div>
+<div class="card">Japan Factory <br><button>Apply</button></div>
+<div class="card">Dubai Driver <br><button>Apply</button></div>
+<div class="card">Korea Housekeeping <br><button>Apply</button></div>
 </div>
 </div>
 
-<!-- 3. APPLICATION STATUS -->
+<!-- STATUS -->
 <div id="candStatus" class="section">
 <h1>Application Tracking</h1>
-
 <table>
 <tr><th>Job</th><th>Status</th></tr>
 <tr><td>Japan Factory</td><td>Interview Scheduled</td></tr>
@@ -175,20 +173,18 @@ td,th{
 </table>
 </div>
 
-<!-- 4. TRAINING -->
+<!-- TRAINING -->
 <div id="candTraining" class="section">
-<h1>Training & Exams</h1>
-
+<h1>Training</h1>
 <div class="cardBox">
-<div class="card">Safety Training - Completed</div>
-<div class="card">Language Test - Pending</div>
+<div class="card">Safety Training ✔️</div>
+<div class="card">Language Test ⏳</div>
 </div>
 </div>
 
-<!-- 5. PAYMENTS -->
+<!-- PAYMENTS -->
 <div id="candPayments" class="section">
 <h1>Payments</h1>
-
 <table>
 <tr><th>Type</th><th>Status</th></tr>
 <tr><td>Registration</td><td>Paid</td></tr>
@@ -196,37 +192,51 @@ td,th{
 </table>
 </div>
 
-<!-- 6. NOTIFICATIONS -->
+<!-- NOTIFICATIONS -->
 <div id="candNotifications" class="section">
 <h1>Notifications</h1>
-
 <div class="alert">Interview scheduled for Japan job</div>
 <div class="alert">Passport renewal required</div>
 </div>
 
-<!-- 7. SUPPORT -->
+<!-- SUPPORT -->
 <div id="candSupport" class="section">
 <h1>Support</h1>
-
-<textarea placeholder="Write your issue..." style="width:100%;height:100px;"></textarea>
-<button>Submit Ticket</button>
+<textarea style="width:100%;height:100px;"></textarea>
+<button>Submit</button>
 </div>
 
-<!-- 9. VISUALS -->
+<!-- VISUALS -->
 <div id="candVisuals" class="section">
-<h1>Overview</h1>
+<h1>Candidate Analytics Dashboard</h1>
 
 <div class="chart-container">
-<canvas id="candChart"></canvas>
+<h3>Profile Completion</h3>
+<canvas id="profileChart"></canvas>
 </div>
+
+<div class="chart-container">
+<h3>Application Status</h3>
+<canvas id="statusChart"></canvas>
+</div>
+
+<div class="chart-container">
+<h3>Training Progress</h3>
+<canvas id="trainingChart"></canvas>
+</div>
+
+<div class="chart-container">
+<h3>Payment Overview</h3>
+<canvas id="paymentChart"></canvas>
 </div>
 
 </div>
+
 </div>
 
 <script>
 
-/* LOAD DASHBOARD */
+/* DASHBOARD LOAD */
 function loadDashboard(role){
 rolePage.style.display="none";
 sidebar.style.display="block";
@@ -253,6 +263,7 @@ adminSections.style.display="none";
 recruiterSections.style.display="none";
 candidateSections.style.display="block";
 
+/* MENU */
 menu.innerHTML=`
 <a onclick="showSection('candProfile')">Profile</a>
 <a onclick="showSection('candJobs')">Jobs</a>
@@ -261,9 +272,10 @@ menu.innerHTML=`
 <a onclick="showSection('candPayments')">Payments</a>
 <a onclick="showSection('candNotifications')">Notifications</a>
 <a onclick="showSection('candSupport')">Support</a>
-<a onclick="showSection('candVisuals')">Overview</a>
+<a onclick="showSection('candVisuals')">Analytics</a>
 <a onclick="goBack()">Logout</a>
 `;
+
 showSection('candProfile');
 }
 }
@@ -276,12 +288,47 @@ document.getElementById(id).style.display="block";
 
 function goBack(){location.reload();}
 
-/* CHART */
-new Chart(candChart,{
+/* ================= CANDIDATE CHARTS ================= */
+
+/* PROFILE */
+new Chart(document.getElementById("profileChart"),{
 type:'doughnut',
 data:{
-labels:["Completed","Pending","In Progress"],
+labels:["Completed","Missing","Pending"],
+datasets:[{data:[70,20,10]}]
+}
+});
+
+/* STATUS */
+new Chart(document.getElementById("statusChart"),{
+type:'bar',
+data:{
+labels:["Applied","Interview","Selected","Visa"],
+datasets:[{
+label:"Applications",
+data:[6,4,2,1]
+}]
+}
+});
+
+/* TRAINING */
+new Chart(document.getElementById("trainingChart"),{
+type:'pie',
+data:{
+labels:["Completed","Ongoing","Not Started"],
 datasets:[{data:[60,25,15]}]
+}
+});
+
+/* PAYMENTS */
+new Chart(document.getElementById("paymentChart"),{
+type:'bar',
+data:{
+labels:["Paid","Pending","Overdue"],
+datasets:[{
+label:"Payments",
+data:[5,2,1]
+}]
 }
 });
 
