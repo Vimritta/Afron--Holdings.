@@ -3,314 +3,255 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Dashboard</title>
+<title>Role Based Dashboard</title>
 
-<!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
-    body{
-        margin:0;
-        font-family:Arial, Helvetica, sans-serif;
-        background:#f4f4f4;
-        display:flex;
-    }
+body{
+    margin:0;
+    font-family:Arial;
+    background:#f4f4f4;
+}
 
-    /* Sidebar */
-    .sidebar{
-        width:250px;
-        background:#0d1b2a;
-        color:white;
-        height:100vh;
-        padding-top:20px;
-        position:fixed;
-    }
-    .sidebar h2{
-        text-align:center;
-        margin-bottom:20px;
-    }
-    .sidebar a{
-        display:block;
-        padding:15px;
-        text-decoration:none;
-        color:white;
-        border-bottom:1px solid #1b263b;
-        cursor:pointer;
-    }
-    .sidebar a:hover{
-        background:#1b263b;
-    }
+/* ROLE SELECTION */
+.roleSelect{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    gap:30px;
+}
 
-    /* Main Area */
-    .main{
-        margin-left:260px;
-        padding:20px;
-        width:100%;
-    }
+.roleBtn{
+    padding:20px 40px;
+    font-size:20px;
+    background:#0d1b2a;
+    color:white;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+}
 
-    h1{
-        background:#1b263b;
-        color:white;
-        padding:10px;
-        border-radius:5px;
-        width:fit-content;
-    }
+/* SIDEBAR */
+.sidebar{
+    width:250px;
+    background:#0d1b2a;
+    color:white;
+    height:100vh;
+    padding-top:20px;
+    position:fixed;
+    display:none;
+}
 
-    .chart-container{
-        width:600px;
-        height:400px;
-        background:white;
-        padding:20px;
-        border-radius:10px;
-        box-shadow:0 0 10px rgba(0,0,0,0.1);
-        margin-bottom:40px;
-    }
+.sidebar h2{
+    text-align:center;
+}
+
+.sidebar a{
+    display:block;
+    padding:15px;
+    color:white;
+    cursor:pointer;
+}
+
+.sidebar a:hover{
+    background:#1b263b;
+}
+
+/* MAIN */
+.main{
+    margin-left:260px;
+    padding:20px;
+    display:none;
+}
+
+.section{
+    display:none;
+}
+
+.chart-container{
+    width:600px;
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    margin-top:20px;
+}
 </style>
 </head>
+
 <body>
 
-<!-- Sidebar -->
-<div class="sidebar">
-    <h2>Admin Panel</h2>
-    <a onclick="showSection('analytics')">Analytics</a>
-    <a onclick="showSection('userManagement')">User Management</a>
-    <a onclick="showSection('jobPosting')">Job Posting</a>
-    <a onclick="showSection('interviews')">Interviews</a>
-    <a onclick="showSection('messaging')">Messaging</a>
-    <a onclick="showSection('performance')">Performance</a>
-
-    <!-- NEW ADDED ITEMS -->
-    <a onclick="showSection('candidateReg')">Candidate Registration Forms</a>
-    <a onclick="showSection('recruiterPerf')">Recruiter Performance</a>
-    <a onclick="showSection('policeReport')">Police Certificate Reports</a>
+<!-- ROLE SELECT -->
+<div id="rolePage" class="roleSelect">
+    <button class="roleBtn" onclick="loadDashboard('admin')">Admin</button>
+    <button class="roleBtn" onclick="loadDashboard('recruiter')">Recruiter</button>
 </div>
 
-<!-- Main -->
-<div class="main">
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+    <h2 id="roleTitle"></h2>
+    <div id="menuItems"></div>
+</div>
 
-<!-- ANALYTICS SECTION -->
-<div id="analytics" class="section">
-    <h1>Analytics Dashboard</h1>
-    <p><b>This section provides overall system analytics including candidate trends, traffic activity, and performance correlation.</b></p>
+<!-- MAIN -->
+<div class="main" id="mainContent">
 
-    <div class="chart-container">
-        <h3>Scatter Chart – Candidate Trend Analysis</h3>
-        <canvas id="scatterChart"></canvas>
+    <!-- ADMIN SECTIONS -->
+    <div id="adminSections">
+        <div id="analytics" class="section">
+            <h1>Admin Analytics</h1>
+            <div class="chart-container"><canvas id="scatterChart"></canvas></div>
+        </div>
+
+        <div id="userManagement" class="section">
+            <h1>User Management</h1>
+            <div class="chart-container"><canvas id="userBarChart"></canvas></div>
+        </div>
+
+        <div id="jobPosting" class="section">
+            <h1>Job Posting</h1>
+            <div class="chart-container"><canvas id="jobPieChart"></canvas></div>
+        </div>
+
+        <div id="interviews" class="section">
+            <h1>Interviews</h1>
+            <div class="chart-container"><canvas id="interviewLineChart"></canvas></div>
+        </div>
+
+        <div id="messaging" class="section">
+            <h1>Messaging</h1>
+            <div class="chart-container"><canvas id="messageRadarChart"></canvas></div>
+        </div>
+
+        <div id="performance" class="section">
+            <h1>Performance</h1>
+            <div class="chart-container"><canvas id="performanceDoughnutChart"></canvas></div>
+        </div>
     </div>
-</div>
 
-<!-- USER MANAGEMENT -->
-<div id="userManagement" class="section" style="display:none;">
-    <h1>User Management</h1>
-    <p>Shows registered users, active accounts, and user growth.</p>
+    <!-- RECRUITER SECTIONS -->
+    <div id="recruiterSections">
+        <div id="recDashboard" class="section">
+            <h1>Recruiter Dashboard</h1>
+            <div class="chart-container"><canvas id="recChart"></canvas></div>
+        </div>
 
-    <div class="chart-container">
-        <h3>Bar Chart – Monthly New Users</h3>
-        <canvas id="userBarChart"></canvas>
+        <div id="recJobs" class="section">
+            <h1>Manage Jobs</h1>
+            <p>Create / Edit / Close Jobs</p>
+        </div>
+
+        <div id="recCandidates" class="section">
+            <h1>Candidates</h1>
+            <p>View Applicants & Status</p>
+        </div>
+
+        <div id="recInterviews" class="section">
+            <h1>Interview Schedule</h1>
+        </div>
+
+        <div id="recPerformance" class="section">
+            <h1>Your Performance</h1>
+        </div>
     </div>
-</div>
-
-<!-- JOB POSTING -->
-<div id="jobPosting" class="section" style="display:none;">
-    <h1>Job Posting</h1>
-    <p>Distribution of job categories posted on the platform.</p>
-
-    <div class="chart-container">
-        <h3>Pie Chart – Job Categories</h3>
-        <canvas id="jobPieChart"></canvas>
-    </div>
-</div>
-
-<!-- INTERVIEWS -->
-<div id="interviews" class="section" style="display:none;">
-    <h1>Interviews</h1>
-    <p>Weekly interview schedule and trends.</p>
-
-    <div class="chart-container">
-        <h3>Line Chart – Weekly Interviews</h3>
-        <canvas id="interviewLineChart"></canvas>
-    </div>
-</div>
-
-<!-- MESSAGING -->
-<div id="messaging" class="section" style="display:none;">
-    <h1>Messaging</h1>
-    <p>Message frequency between recruiters and candidates.</p>
-
-    <div class="chart-container">
-        <h3>Radar Chart – Message Types</h3>
-        <canvas id="messageRadarChart"></canvas>
-    </div>
-</div>
-
-<!-- PERFORMANCE -->
-<div id="performance" class="section" style="display:none;">
-    <h1>Performance Dashboard</h1>
-    <p>Tracks system performance and recruiter activity.</p>
-
-    <div class="chart-container">
-        <h3>Doughnut Chart – Recruiter Activity</h3>
-        <canvas id="performanceDoughnutChart"></canvas>
-    </div>
-</div>
-
-<!-- -------------------------------------
-     NEW SECTION: CANDIDATE REGISTRATION
--------------------------------------- -->
-<div id="candidateReg" class="section" style="display:none;">
-    <h1>Candidate Registration Forms</h1>
-    <p>Forms submitted by candidates for review.</p>
-
-    <div class="chart-container">
-        <h3>Candidate Form Status</h3>
-        <canvas id="candidateRegChart"></canvas>
-    </div>
-</div>
-
-<!-- -------------------------------------
-     NEW SECTION: RECRUITER PERFORMANCE
--------------------------------------- -->
-<div id="recruiterPerf" class="section" style="display:none;">
-    <h1>Recruiter Performance</h1>
-    <p>Tracks individual recruiter achievements and tasks.</p>
-
-    <div class="chart-container">
-        <h3>Bar Chart – Recruiter Stats</h3>
-        <canvas id="recruiterPerfChart"></canvas>
-    </div>
-</div>
-
-<!-- -------------------------------------
-     NEW SECTION: POLICE REPORTS
--------------------------------------- -->
-<div id="policeReport" class="section" style="display:none;">
-    <h1>Police Certificate Reports</h1>
-    <p>Verification status of candidate police clearance.</p>
-
-    <div class="chart-container">
-        <h3>Police Report Verification</h3>
-        <canvas id="policeReportChart"></canvas>
-    </div>
-</div>
 
 </div>
 
 <script>
-// SECTION SWITCHING
-function showSection(sectionID){
-    document.querySelectorAll('.section').forEach(sec => sec.style.display='none');
-    document.getElementById(sectionID).style.display='block';
+
+/* LOAD DASHBOARD BASED ON ROLE */
+function loadDashboard(role){
+    document.getElementById("rolePage").style.display="none";
+    document.getElementById("sidebar").style.display="block";
+    document.getElementById("mainContent").style.display="block";
+
+    let menu = document.getElementById("menuItems");
+
+    if(role === "admin"){
+        roleTitle.innerText="Admin Panel";
+
+        menu.innerHTML = `
+            <a onclick="showSection('analytics')">Analytics</a>
+            <a onclick="showSection('userManagement')">User Management</a>
+            <a onclick="showSection('jobPosting')">Job Posting</a>
+            <a onclick="showSection('interviews')">Interviews</a>
+            <a onclick="showSection('messaging')">Messaging</a>
+            <a onclick="showSection('performance')">Performance</a>
+            <a onclick="goBack()">⬅ Logout</a>
+        `;
+
+        document.getElementById("adminSections").style.display="block";
+        document.getElementById("recruiterSections").style.display="none";
+
+        showSection('analytics');
+
+    } else {
+        roleTitle.innerText="Recruiter Panel";
+
+        menu.innerHTML = `
+            <a onclick="showSection('recDashboard')">Dashboard</a>
+            <a onclick="showSection('recJobs')">Jobs</a>
+            <a onclick="showSection('recCandidates')">Candidates</a>
+            <a onclick="showSection('recInterviews')">Interviews</a>
+            <a onclick="showSection('recPerformance')">Performance</a>
+            <a onclick="goBack()">⬅ Logout</a>
+        `;
+
+        document.getElementById("adminSections").style.display="none";
+        document.getElementById("recruiterSections").style.display="block";
+
+        showSection('recDashboard');
+    }
 }
 
-/* -------------------- ANALYTICS SCATTER CHART -------------------- */
+/* SECTION SWITCH */
+function showSection(id){
+    document.querySelectorAll(".section").forEach(sec=>{
+        sec.style.display="none";
+    });
+    document.getElementById(id).style.display="block";
+}
+
+/* BACK */
+function goBack(){
+    location.reload();
+}
+
+/* CHARTS (SAME AS YOUR STYLE) */
 new Chart(document.getElementById('scatterChart'), {
     type: 'scatter',
-    data: {
-        datasets: [{
-            label: "Candidate Score vs Experience",
-            data: [
-                {x:1, y:40}, {x:2, y:45}, {x:3, y:50}, {x:4, y:70},{x:5, y:90}
-            ],
-            backgroundColor: "blue",
-            borderColor: "blue",
-            showLine: true,
-            borderWidth: 2,
-            tension: 0.4
-        }]
-    }
+    data: { datasets: [{ data:[{x:1,y:40},{x:2,y:60},{x:3,y:80}]}] }
 });
 
-/* ---------------- USER MANAGEMENT – BAR CHART ---------------- */
 new Chart(document.getElementById('userBarChart'), {
-    type: 'bar',
-    data: {
-        labels: ["Jan","Feb","Mar","Apr","May"],
-        datasets: [{
-            label:"New Users",
-            data:[120,150,180,220,260]
-        }]
-    }
+    type:'bar',
+    data:{ labels:["Jan","Feb","Mar"], datasets:[{data:[100,200,300]}] }
 });
 
-/* ---------------- JOB POSTING – PIE CHART ---------------- */
 new Chart(document.getElementById('jobPieChart'), {
     type:'pie',
-    data:{
-        labels:["IT","HR","Finance","Marketing"],
-        datasets:[{
-            data:[40,20,25,15]
-        }]
-    }
+    data:{ labels:["IT","HR"], datasets:[{data:[60,40]}] }
 });
 
-/* ---------------- INTERVIEWS – LINE CHART ---------------- */
 new Chart(document.getElementById('interviewLineChart'), {
     type:'line',
-    data:{
-        labels:["Mon","Tue","Wed","Thu","Fri"],
-        datasets:[{
-            label:"Interviews",
-            data:[5,8,6,10,12]
-        }]
-    }
+    data:{ labels:["Mon","Tue"], datasets:[{data:[5,10]}] }
 });
 
-/* ---------------- MESSAGING – RADAR CHART ---------------- */
 new Chart(document.getElementById('messageRadarChart'), {
     type:'radar',
-    data:{
-        labels:["Sent","Received","Unread","Follow-ups"],
-        datasets:[{
-            label:"Messages",
-            data:[120,150,30,90]
-        }]
-    }
+    data:{ labels:["A","B","C"], datasets:[{data:[10,20,30]}] }
 });
 
-/* ---------------- PERFORMANCE – DOUGHNUT CHART ---------------- */
 new Chart(document.getElementById('performanceDoughnutChart'), {
     type:'doughnut',
-    data:{
-        labels:["Active","Idle","Completed Tasks"],
-        datasets:[{
-            data:[60,20,30]
-        }]
-    }
+    data:{ labels:["Done","Pending"], datasets:[{data:[70,30]}] }
 });
 
-/* -------- NEW CHART: Candidate Form Status -------- */
-new Chart(document.getElementById('candidateRegChart'), {
+new Chart(document.getElementById('recChart'), {
     type:'bar',
-    data:{
-        labels:["Submitted","Pending","Approved","Rejected"],
-        datasets:[{
-            label:"Forms",
-            data:[50,20,30,10]
-        }]
-    }
-});
-
-/* -------- NEW CHART: Recruiter Performance -------- */
-new Chart(document.getElementById('recruiterPerfChart'), {
-    type:'bar',
-    data:{
-        labels:["John","Sarah","Ali","Niro"],
-        datasets:[{
-            label:"Candidates Processed",
-            data:[40,55,30,60]
-        }]
-    }
-});
-
-/* -------- NEW CHART: Police Reports -------- */
-new Chart(document.getElementById('policeReportChart'), {
-    type:'pie',
-    data:{
-        labels:["Verified","Pending","Rejected"],
-        datasets:[{
-            data:[70,20,10]
-        }]
-    }
+    data:{ labels:["Applied","Shortlisted"], datasets:[{data:[50,20]}] }
 });
 
 </script>
